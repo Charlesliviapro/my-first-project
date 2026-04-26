@@ -1,0 +1,1624 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="A complete demonstration of semantic HTML5 — every meaningful element in one self-contained page."
+    />
+    <meta name="author" content="Your Name" />
+    <meta name="theme-color" content="#0f172a" />
+
+    <!-- Open Graph (social sharing) -->
+    <meta property="og:title" content="Semantic HTML5 Reference" />
+    <meta
+      property="og:description"
+      content="Every semantic HTML5 element demonstrated in one page."
+    />
+    <meta property="og:type" content="website" />
+
+    <title>Semantic HTML5 — Complete Reference</title>
+
+    <style>
+      /* ── Reset ── */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* ── Design tokens ── */
+      :root {
+        --bg: #0f172a;
+        --surface: #1e293b;
+        --border: #334155;
+        --accent: #6366f1;
+        --accent2: #a855f7;
+        --text: #e2e8f0;
+        --muted: #94a3b8;
+        --green: #4ade80;
+        --yellow: #fbbf24;
+        --red: #f87171;
+        --radius: 12px;
+        --font-sans: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+        --font-mono: "Cascadia Code", "Fira Code", Consolas, monospace;
+      }
+
+      /* ── Base ── */
+      body {
+        font-family: var(--font-sans);
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.7;
+        padding: 0;
+      }
+
+      /* ── Skip nav (accessibility) ── */
+      .skip-link {
+        position: absolute;
+        top: -100%;
+        left: 1rem;
+        background: var(--accent);
+        color: #fff;
+        padding: 8px 16px;
+        border-radius: 0 0 8px 8px;
+        font-size: 0.875rem;
+        z-index: 999;
+        text-decoration: none;
+        transition: top 0.2s;
+      }
+      .skip-link:focus {
+        top: 0;
+      }
+
+      /* ── Header / hero ── */
+      header.site-header {
+        background: linear-gradient(135deg, #1e1b4b, #1e3a5f);
+        border-bottom: 1px solid var(--border);
+        padding: 60px 24px 48px;
+        text-align: center;
+      }
+      header.site-header h1 {
+        font-size: clamp(1.8rem, 5vw, 3rem);
+        font-weight: 800;
+        background: linear-gradient(90deg, #a5b4fc, #c084fc);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 12px;
+      }
+      header.site-header p {
+        color: var(--muted);
+        font-size: 1.05rem;
+        max-width: 600px;
+        margin: 0 auto 24px;
+      }
+      .badge-row {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .badge {
+        background: #1e293b;
+        border: 1px solid var(--border);
+        color: var(--muted);
+        font-size: 0.72rem;
+        padding: 4px 12px;
+        border-radius: 99px;
+        letter-spacing: 0.04em;
+      }
+
+      /* ── Top navigation ── */
+      nav.site-nav {
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      nav.site-nav ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2px;
+        list-style: none;
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 16px;
+      }
+      nav.site-nav a {
+        display: block;
+        padding: 14px 16px;
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 0.875rem;
+        transition: color 0.15s;
+      }
+      nav.site-nav a:hover,
+      nav.site-nav a[aria-current="page"] {
+        color: #a5b4fc;
+      }
+
+      /* ── Page shell ── */
+      .shell {
+        display: grid;
+        grid-template-columns: 1fr 280px;
+        gap: 32px;
+        max-width: 1100px;
+        margin: 40px auto;
+        padding: 0 24px 80px;
+        align-items: start;
+      }
+      @media (max-width: 860px) {
+        .shell {
+          grid-template-columns: 1fr;
+        }
+        aside {
+          order: -1;
+        }
+      }
+
+      /* ── Generic section card ── */
+      section,
+      article {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 28px;
+        margin-bottom: 24px;
+      }
+      h2 {
+        font-size: 1.25rem;
+        color: #f1f5f9;
+        margin-bottom: 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      h3 {
+        font-size: 1rem;
+        color: #cbd5e1;
+        margin: 16px 0 8px;
+      }
+      p {
+        color: var(--muted);
+        margin-bottom: 10px;
+      }
+      p:last-child {
+        margin-bottom: 0;
+      }
+
+      /* ── Aside / sidebar ── */
+      aside {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 22px;
+        position: sticky;
+        top: 60px;
+      }
+      aside h2 {
+        font-size: 1rem;
+        margin-bottom: 12px;
+      }
+      aside nav ul {
+        list-style: none;
+      }
+      aside nav li {
+        border-bottom: 1px solid var(--border);
+      }
+      aside nav a {
+        display: block;
+        padding: 8px 0;
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 0.875rem;
+        transition: color 0.15s;
+      }
+      aside nav a:hover {
+        color: var(--text);
+      }
+
+      /* ── Code ── */
+      pre {
+        background: #0d1117;
+        border: 1px solid #1e3a5f;
+        border-radius: 8px;
+        padding: 16px;
+        overflow-x: auto;
+        margin: 10px 0;
+      }
+      code {
+        font-family: var(--font-mono);
+        font-size: 0.83rem;
+        color: #93c5fd;
+        background: #1e293b;
+        padding: 2px 6px;
+        border-radius: 4px;
+      }
+      pre code {
+        background: none;
+        padding: 0;
+        font-size: 0.83rem;
+        color: #e2e8f0;
+        line-height: 1.6;
+      }
+
+      /* ── Figures ── */
+      figure {
+        background: #0f172a;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        overflow: hidden;
+        margin: 16px 0;
+        text-align: center;
+      }
+      figure img {
+        width: 100%;
+        display: block;
+        object-fit: cover;
+        max-height: 240px;
+      }
+      figcaption {
+        color: var(--muted);
+        font-size: 0.8rem;
+        padding: 10px;
+        font-style: italic;
+        border-top: 1px solid var(--border);
+      }
+
+      /* ── Tables ── */
+      .table-wrap {
+        overflow-x: auto;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.875rem;
+      }
+      th {
+        text-align: left;
+        background: #0f172a;
+        color: var(--muted);
+        font-weight: 600;
+        padding: 10px 14px;
+        border-bottom: 1px solid var(--border);
+      }
+      td {
+        padding: 10px 14px;
+        border-bottom: 1px solid #0f172a22;
+        vertical-align: top;
+      }
+      tbody tr:nth-child(even) td {
+        background: #0f172a33;
+      }
+      tbody tr:hover td {
+        background: #1e3a5f22;
+      }
+      tfoot td {
+        color: var(--muted);
+        font-style: italic;
+        font-size: 0.8rem;
+        border-top: 1px solid var(--border);
+      }
+
+      /* ── Forms ── */
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      label {
+        font-size: 0.875rem;
+        color: #cbd5e1;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+      input,
+      select,
+      textarea {
+        background: #0f172a;
+        border: 1px solid var(--border);
+        color: var(--text);
+        padding: 9px 12px;
+        border-radius: 8px;
+        font-family: var(--font-sans);
+        font-size: 0.875rem;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      input:focus,
+      select:focus,
+      textarea:focus {
+        border-color: var(--accent);
+      }
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      fieldset {
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      legend {
+        color: #a5b4fc;
+        font-size: 0.875rem;
+        padding: 0 6px;
+      }
+      .radio-group,
+      .check-group {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .radio-group label,
+      .check-group label {
+        flex-direction: row;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+      }
+      button[type="submit"] {
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        color: #fff;
+        border: none;
+        padding: 11px 28px;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 0.9rem;
+        cursor: pointer;
+        align-self: flex-start;
+        transition: opacity 0.2s;
+      }
+      button[type="submit"]:hover {
+        opacity: 0.85;
+      }
+
+      /* ── Lists ── */
+      ul.styled,
+      ol.styled {
+        padding-left: 20px;
+        color: var(--muted);
+      }
+      ul.styled li,
+      ol.styled li {
+        margin: 6px 0;
+      }
+      dl.styled dt {
+        color: #a5b4fc;
+        font-weight: 600;
+        margin-top: 10px;
+      }
+      dl.styled dd {
+        color: var(--muted);
+        margin-left: 16px;
+      }
+
+      /* ── Blockquote ── */
+      blockquote {
+        border-left: 4px solid var(--accent);
+        background: #1e3a5f22;
+        padding: 16px 20px;
+        border-radius: 0 8px 8px 0;
+        margin: 12px 0;
+      }
+      blockquote p {
+        color: #a5b4fc;
+        font-style: italic;
+        font-size: 1.05rem;
+        margin: 0 0 8px;
+      }
+      blockquote footer {
+        color: var(--muted);
+        font-size: 0.8rem;
+      }
+      blockquote footer cite {
+        font-style: normal;
+        color: #cbd5e1;
+      }
+
+      /* ── Details / summary ── */
+      details {
+        background: #0f172a;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        overflow: hidden;
+        margin: 8px 0;
+      }
+      summary {
+        padding: 12px 16px;
+        cursor: pointer;
+        color: #a5b4fc;
+        font-size: 0.9rem;
+        font-weight: 600;
+        list-style: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      summary::after {
+        content: "＋";
+        transition: transform 0.2s;
+      }
+      details[open] summary::after {
+        content: "－";
+      }
+      details > p {
+        padding: 0 16px 14px;
+        color: var(--muted);
+        font-size: 0.875rem;
+      }
+
+      /* ── Progress / meter ── */
+      .meter-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 8px 0;
+        font-size: 0.875rem;
+        color: var(--muted);
+      }
+      .meter-label {
+        min-width: 120px;
+      }
+      progress,
+      meter {
+        flex: 1;
+        height: 10px;
+        border-radius: 99px;
+        border: none;
+        appearance: none;
+        -webkit-appearance: none;
+        background: var(--border);
+      }
+      progress::-webkit-progress-bar {
+        background: var(--border);
+        border-radius: 99px;
+      }
+      progress::-webkit-progress-value {
+        background: linear-gradient(90deg, var(--accent), var(--accent2));
+        border-radius: 99px;
+      }
+      meter::-webkit-meter-bar {
+        background: var(--border);
+        border-radius: 99px;
+      }
+      meter::-webkit-meter-optimum-value {
+        background: var(--green);
+        border-radius: 99px;
+      }
+      meter::-webkit-meter-suboptimum-value {
+        background: var(--yellow);
+        border-radius: 99px;
+      }
+      meter::-webkit-meter-even-less-good-value {
+        background: var(--red);
+        border-radius: 99px;
+      }
+      .meter-val {
+        min-width: 40px;
+        text-align: right;
+      }
+
+      /* ── Dialog ── */
+      dialog {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        color: var(--text);
+        padding: 32px;
+        max-width: 440px;
+        width: 90%;
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+      }
+      dialog::backdrop {
+        background: rgba(0, 0, 0, 0.65);
+      }
+      dialog h3 {
+        color: #f1f5f9;
+        margin-bottom: 12px;
+      }
+      dialog p {
+        color: var(--muted);
+        margin-bottom: 20px;
+      }
+      .dialog-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+      }
+      .btn-ghost {
+        background: none;
+        border: 1px solid var(--border);
+        color: var(--muted);
+        padding: 8px 18px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 0.875rem;
+        transition: all 0.15s;
+      }
+      .btn-ghost:hover {
+        border-color: var(--accent);
+        color: #a5b4fc;
+      }
+      .btn-primary {
+        background: var(--accent);
+        border: none;
+        color: #fff;
+        padding: 8px 18px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 0.875rem;
+        font-weight: 600;
+        transition: opacity 0.15s;
+      }
+      .btn-primary:hover {
+        opacity: 0.85;
+      }
+      #open-dialog-btn {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        color: #a5b4fc;
+        padding: 9px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 0.875rem;
+        font-weight: 600;
+        transition: all 0.15s;
+      }
+      #open-dialog-btn:hover {
+        border-color: var(--accent);
+      }
+
+      /* ── Address ── */
+      address {
+        font-style: normal;
+        background: #0f172a;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 16px 20px;
+        font-size: 0.875rem;
+        color: var(--muted);
+        line-height: 2;
+        margin-top: 10px;
+      }
+      address a {
+        color: #93c5fd;
+        text-decoration: none;
+      }
+      address a:hover {
+        text-decoration: underline;
+      }
+
+      /* ── Mark / ins / del ── */
+      mark {
+        background: #854d0e;
+        color: #fef08a;
+        padding: 1px 5px;
+        border-radius: 3px;
+      }
+      ins {
+        color: var(--green);
+        text-decoration-color: var(--green);
+      }
+      del {
+        color: var(--red);
+      }
+
+      /* ── Kbd ── */
+      kbd {
+        background: #1e293b;
+        border: 1px solid var(--border);
+        border-bottom-width: 3px;
+        border-radius: 5px;
+        padding: 2px 7px;
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        color: #cbd5e1;
+      }
+
+      /* ── Inline tags showcase ── */
+      .inline-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+        font-size: 0.875rem;
+        color: var(--muted);
+      }
+      .inline-tags > span {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      /* ── Abbr ── */
+      abbr[title] {
+        text-decoration: underline dotted;
+        cursor: help;
+        color: #93c5fd;
+      }
+
+      /* ── Time ── */
+      time {
+        color: #34d399;
+        font-size: 0.875rem;
+      }
+
+      /* ── Tag pills ── */
+      .tag-pill {
+        background: #1e3a5f;
+        color: #93c5fd;
+        font-family: var(--font-mono);
+        padding: 2px 9px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        white-space: nowrap;
+      }
+
+      /* ── Footer ── */
+      footer.site-footer {
+        background: var(--surface);
+        border-top: 1px solid var(--border);
+        padding: 48px 24px;
+        text-align: center;
+      }
+      .footer-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 32px;
+        max-width: 900px;
+        margin: 0 auto 32px;
+        text-align: left;
+      }
+      .footer-col h3 {
+        color: #cbd5e1;
+        font-size: 0.875rem;
+        margin-bottom: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+      .footer-col ul {
+        list-style: none;
+      }
+      .footer-col li {
+        margin: 6px 0;
+      }
+      .footer-col a {
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 0.875rem;
+        transition: color 0.15s;
+      }
+      .footer-col a:hover {
+        color: var(--text);
+      }
+      .footer-bottom {
+        color: var(--muted);
+        font-size: 0.8rem;
+        border-top: 1px solid var(--border);
+        padding-top: 20px;
+        max-width: 900px;
+        margin: 0 auto;
+      }
+
+      /* ── Scrollbar ── */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--bg);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: 3px;
+      }
+
+      /* ── Utility ── */
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- ══════════ SKIP NAVIGATION ══════════ -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- ══════════ SITE HEADER ══════════ -->
+    <header class="site-header">
+      <h1>Semantic HTML5</h1>
+      <p>
+        Every meaningful HTML5 element — structure, content, interactive,
+        metadata — demonstrated in one self-contained page.
+      </p>
+      <div class="badge-row" role="list" aria-label="Page highlights">
+        <span class="badge" role="listitem">✦ All semantic tags</span>
+        <span class="badge" role="listitem">✦ Accessibility ready</span>
+        <span class="badge" role="listitem">✦ Zero external files</span>
+        <span class="badge" role="listitem">✦ Self-contained CSS &amp; JS</span>
+      </div>
+    </header>
+
+    <!-- ══════════ SITE NAVIGATION ══════════ -->
+    <nav class="site-nav" aria-label="Primary navigation">
+      <ul role="list">
+        <li><a href="#structure" aria-current="page">Structure</a></li>
+        <li><a href="#text">Text</a></li>
+        <li><a href="#media">Media</a></li>
+        <li><a href="#tables">Tables</a></li>
+        <li><a href="#forms">Forms</a></li>
+        <li><a href="#interactive">Interactive</a></li>
+        <li><a href="#metadata">Metadata</a></li>
+      </ul>
+    </nav>
+
+    <!-- ══════════ PAGE SHELL ══════════ -->
+    <div class="shell">
+      <!-- ════════ MAIN ════════ -->
+      <main id="main-content" aria-label="Main content">
+        <!-- ─── STRUCTURE ─── -->
+        <section id="structure" aria-labelledby="h-structure">
+          <h2 id="h-structure">🏛️ Structural Elements</h2>
+          <p>
+            Semantic structural tags communicate the <em>role</em> of each
+            region to browsers and assistive technologies.
+          </p>
+
+          <div class="table-wrap">
+            <table>
+              <caption class="sr-only">
+                Semantic structural HTML5 tags
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">Tag</th>
+                  <th scope="col">Role</th>
+                  <th scope="col">Notes</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="tag-pill">&lt;header&gt;</span></td>
+                  <td>Page or section header</td>
+                  <td>May contain logo, nav, search</td>
+                </tr>
+                <tr>
+                  <td><span class="tag-pill">&lt;nav&gt;</span></td>
+                  <td>Navigation links</td>
+                  <td>Use <code>aria-label</code> when multiple navs exist</td>
+                </tr>
+                <tr>
+                  <td><span class="tag-pill">&lt;main&gt;</span></td>
+                  <td>Primary content</td>
+                  <td>One per page, skip-link target</td>
+                </tr>
+                <tr>
+                  <td><span class="tag-pill">&lt;article&gt;</span></td>
+                  <td>Self-contained content</td>
+                  <td>Blog post, card, comment</td>
+                </tr>
+                <tr>
+                  <td><span class="tag-pill">&lt;section&gt;</span></td>
+                  <td>Thematic grouping</td>
+                  <td>Should have a heading</td>
+                </tr>
+                <tr>
+                  <td><span class="tag-pill">&lt;aside&gt;</span></td>
+                  <td>Tangentially related</td>
+                  <td>Sidebar, pull-quote, ad</td>
+                </tr>
+                <tr>
+                  <td><span class="tag-pill">&lt;footer&gt;</span></td>
+                  <td>Closing info</td>
+                  <td>Author, copyright, links</td>
+                </tr>
+                <tr>
+                  <td><span class="tag-pill">&lt;address&gt;</span></td>
+                  <td>Contact info</td>
+                  <td>For the nearest article or body</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="3">Source: HTML Living Standard (WHATWG)</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </section>
+
+        <!-- ─── TEXT CONTENT ─── -->
+        <section id="text" aria-labelledby="h-text">
+          <h2 id="h-text">✏️ Text Content</h2>
+
+          <!-- Article -->
+          <article aria-labelledby="h-article">
+            <h3 id="h-article">Article Element</h3>
+            <p>
+              An <code>&lt;article&gt;</code> represents a standalone,
+              independently distributable piece of content — a blog post, a news
+              story, a forum post.
+            </p>
+            <p>Published: <time datetime="2026-04-26">April 26, 2026</time></p>
+          </article>
+
+          <!-- Headings -->
+          <h3>Headings (h1–h6)</h3>
+          <p>
+            Use headings in order to create a logical document outline. Only one
+            <code>&lt;h1&gt;</code> per page.
+          </p>
+          <pre><code>&lt;h1&gt;Page Title (once per page)&lt;/h1&gt;
+&lt;h2&gt;Section Heading&lt;/h2&gt;
+&lt;h3&gt;Sub-section&lt;/h3&gt;
+&lt;h4&gt;Sub-sub-section&lt;/h4&gt;
+&lt;h5&gt;Minor heading&lt;/h5&gt;
+&lt;h6&gt;Smallest heading&lt;/h6&gt;</code></pre>
+
+          <!-- Inline text semantics -->
+          <h3>Inline Text Semantics</h3>
+          <div class="inline-tags" role="list">
+            <span role="listitem"><strong>strong</strong> — importance</span>
+            <span role="listitem"><em>em</em> — stress emphasis</span>
+            <span role="listitem"><mark>mark</mark> — highlight</span>
+            <span role="listitem"><code>code</code> — inline code</span>
+            <span role="listitem"><kbd>Ctrl</kbd>+<kbd>S</kbd> — keyboard</span>
+            <span role="listitem"><del>del</del> — removed</span>
+            <span role="listitem"><ins>ins</ins> — inserted</span>
+            <span role="listitem"
+              ><abbr title="HyperText Markup Language">HTML</abbr> —
+              abbreviation</span
+            >
+            <span role="listitem">H<sub>2</sub>O — subscript</span>
+            <span role="listitem">E=mc<sup>2</sup> — superscript</span>
+            <span role="listitem"
+              ><var>x</var> = <var>y</var> + 2 — variable</span
+            >
+            <span role="listitem"><samp>Error 404</samp> — sample output</span>
+            <span role="listitem"><small>small print</small> — fine print</span>
+            <span role="listitem"><cite>MDN Web Docs</cite> — citation</span>
+          </div>
+
+          <!-- Blockquote -->
+          <h3>Blockquote</h3>
+          <blockquote cite="https://developer.mozilla.org">
+            <p>
+              Using the right element for the right job is the foundation of
+              good HTML — it communicates meaning far beyond visual appearance.
+            </p>
+            <footer>— <cite>MDN Web Docs</cite>, HTML Best Practices</footer>
+          </blockquote>
+
+          <!-- Lists -->
+          <h3>Lists</h3>
+          <div
+            style="
+              display: grid;
+              grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+              gap: 16px;
+              margin-top: 8px;
+            "
+          >
+            <div>
+              <p
+                style="
+                  color: #a5b4fc;
+                  font-size: 0.8rem;
+                  margin-bottom: 6px;
+                  text-transform: uppercase;
+                  letter-spacing: 0.06em;
+                "
+              >
+                Unordered &lt;ul&gt;
+              </p>
+              <ul class="styled" aria-label="Unordered list example">
+                <li>Semantic tags</li>
+                <li>Accessibility</li>
+                <li>Clean markup</li>
+              </ul>
+            </div>
+            <div>
+              <p
+                style="
+                  color: #a5b4fc;
+                  font-size: 0.8rem;
+                  margin-bottom: 6px;
+                  text-transform: uppercase;
+                  letter-spacing: 0.06em;
+                "
+              >
+                Ordered &lt;ol&gt;
+              </p>
+              <ol class="styled" aria-label="Ordered list example">
+                <li>Write HTML</li>
+                <li>Add CSS</li>
+                <li>Add JavaScript</li>
+              </ol>
+            </div>
+            <div>
+              <p
+                style="
+                  color: #a5b4fc;
+                  font-size: 0.8rem;
+                  margin-bottom: 6px;
+                  text-transform: uppercase;
+                  letter-spacing: 0.06em;
+                "
+              >
+                Description &lt;dl&gt;
+              </p>
+              <dl class="styled" aria-label="Description list example">
+                <dt>HTML</dt>
+                <dd>HyperText Markup Language</dd>
+                <dt>CSS</dt>
+                <dd>Cascading Style Sheets</dd>
+              </dl>
+            </div>
+          </div>
+
+          <!-- Pre / Code block -->
+          <h3>
+            Preformatted Code <code>&lt;pre&gt;</code> +
+            <code>&lt;code&gt;</code>
+          </h3>
+          <pre><code>function greet(name) {
+  return `Hello, ${name}!`;
+}
+console.log(greet("World")); // Hello, World!</code></pre>
+        </section>
+
+        <!-- ─── MEDIA ─── -->
+        <section id="media" aria-labelledby="h-media">
+          <h2 id="h-media">🖼️ Media Elements</h2>
+
+          <!-- Figure + figcaption -->
+          <h3>Figure &amp; Figcaption</h3>
+          <figure>
+            <img
+              src="https://picsum.photos/seed/semantic/800/300"
+              alt="A randomly generated scenic landscape photograph from Picsum Photos"
+              width="800"
+              height="300"
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption>
+              Fig. 1 — A demonstration image using the
+              <code>&lt;figure&gt;</code> and
+              <code>&lt;figcaption&gt;</code> elements. Image credit:
+              <cite>Picsum Photos</cite>.
+            </figcaption>
+          </figure>
+
+          <!-- Picture element -->
+          <h3>Responsive Images <code>&lt;picture&gt;</code></h3>
+          <p>
+            The <code>&lt;picture&gt;</code> element lets you serve different
+            images based on viewport size or format support:
+          </p>
+          <pre><code>&lt;picture&gt;
+  &lt;source media="(min-width: 800px)" srcset="large.webp" type="image/webp"&gt;
+  &lt;source media="(min-width: 800px)" srcset="large.jpg"&gt;
+  &lt;img src="small.jpg" alt="Descriptive alt text" loading="lazy"&gt;
+&lt;/picture&gt;</code></pre>
+
+          <!-- Audio -->
+          <h3>Audio <code>&lt;audio&gt;</code></h3>
+          <p>
+            The <code>&lt;audio&gt;</code> element embeds sound with native
+            browser controls:
+          </p>
+          <pre><code>&lt;audio controls&gt;
+  &lt;source src="audio.mp3" type="audio/mpeg"&gt;
+  &lt;source src="audio.ogg" type="audio/ogg"&gt;
+  Your browser does not support the audio element.
+&lt;/audio&gt;</code></pre>
+
+          <!-- Video -->
+          <h3>Video <code>&lt;video&gt;</code></h3>
+          <pre><code>&lt;video controls width="640" poster="thumbnail.jpg"&gt;
+  &lt;source src="video.mp4" type="video/mp4"&gt;
+  &lt;source src="video.webm" type="video/webm"&gt;
+  &lt;track kind="subtitles" src="subs.vtt" srclang="en" label="English"&gt;
+  Your browser does not support the video element.
+&lt;/video&gt;</code></pre>
+        </section>
+
+        <!-- ─── TABLES ─── -->
+        <section id="tables" aria-labelledby="h-tables">
+          <h2 id="h-tables">📊 Tables</h2>
+          <p>
+            Tables are for <strong>tabular data</strong> only — never for page
+            layout. Always include <code>&lt;thead&gt;</code>,
+            <code>&lt;tbody&gt;</code>, <code>&lt;tfoot&gt;</code>, and
+            <code>scope</code> attributes.
+          </p>
+
+          <div class="table-wrap">
+            <table>
+              <caption>
+                Quarterly revenue (USD thousands) — FY 2026
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">Product</th>
+                  <th scope="col">Q1</th>
+                  <th scope="col">Q2</th>
+                  <th scope="col">Q3</th>
+                  <th scope="col">Q4</th>
+                  <th scope="col">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Widget A</th>
+                  <td>120</td>
+                  <td>135</td>
+                  <td>160</td>
+                  <td>180</td>
+                  <td><strong>595</strong></td>
+                </tr>
+                <tr>
+                  <th scope="row">Widget B</th>
+                  <td>85</td>
+                  <td>90</td>
+                  <td>95</td>
+                  <td>105</td>
+                  <td><strong>375</strong></td>
+                </tr>
+                <tr>
+                  <th scope="row">Service</th>
+                  <td>200</td>
+                  <td>220</td>
+                  <td>240</td>
+                  <td>270</td>
+                  <td><strong>930</strong></td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="6">
+                    Figures are unaudited estimates. Currency: USD thousands.
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </section>
+
+        <!-- ─── FORMS ─── -->
+        <section id="forms" aria-labelledby="h-forms">
+          <h2 id="h-forms">📝 Forms &amp; Inputs</h2>
+          <p>
+            Every input must have an associated <code>&lt;label&gt;</code>. Use
+            <code>&lt;fieldset&gt;</code> and <code>&lt;legend&gt;</code> to
+            group related controls.
+          </p>
+
+          <form action="#" method="post" aria-label="Contact form" novalidate>
+            <div class="form-row">
+              <label for="fname">
+                First Name
+                <span aria-hidden="true" style="color: var(--red)">*</span>
+                <input
+                  type="text"
+                  id="fname"
+                  name="fname"
+                  autocomplete="given-name"
+                  placeholder="Alice"
+                  required
+                />
+              </label>
+              <label for="lname">
+                Last Name
+                <span aria-hidden="true" style="color: var(--red)">*</span>
+                <input
+                  type="text"
+                  id="lname"
+                  name="lname"
+                  autocomplete="family-name"
+                  placeholder="Smith"
+                  required
+                />
+              </label>
+            </div>
+
+            <label for="email">
+              Email Address
+              <span aria-hidden="true" style="color: var(--red)">*</span>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                autocomplete="email"
+                placeholder="alice@example.com"
+                required
+              />
+            </label>
+
+            <label for="website">
+              Website
+              <input
+                type="url"
+                id="website"
+                name="website"
+                autocomplete="url"
+                placeholder="https://example.com"
+              />
+            </label>
+
+            <label for="dob">
+              Date of Birth
+              <input type="date" id="dob" name="dob" />
+            </label>
+
+            <label for="volume">
+              Volume: <output id="vol-out" for="volume">50</output>
+              <input
+                type="range"
+                id="volume"
+                name="volume"
+                min="0"
+                max="100"
+                value="50"
+                oninput="document.getElementById('vol-out').value = this.value"
+              />
+            </label>
+
+            <label for="favcolour">
+              Favourite Colour
+              <input
+                type="color"
+                id="favcolour"
+                name="favcolour"
+                value="#6366f1"
+              />
+            </label>
+
+            <label for="role">
+              Role
+              <select id="role" name="role" autocomplete="organization-title">
+                <optgroup label="Developer">
+                  <option value="frontend">Front-end Developer</option>
+                  <option value="backend">Back-end Developer</option>
+                  <option value="fullstack">Full-stack Developer</option>
+                </optgroup>
+                <optgroup label="Other">
+                  <option value="designer">Designer</option>
+                  <option value="student">Student</option>
+                  <option value="other">Other</option>
+                </optgroup>
+              </select>
+            </label>
+
+            <fieldset>
+              <legend>Preferred contact method</legend>
+              <div class="radio-group">
+                <label
+                  ><input type="radio" name="contact" value="email" checked />
+                  Email</label
+                >
+                <label
+                  ><input type="radio" name="contact" value="phone" />
+                  Phone</label
+                >
+                <label
+                  ><input type="radio" name="contact" value="post" />
+                  Post</label
+                >
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Interests</legend>
+              <div class="check-group">
+                <label
+                  ><input
+                    type="checkbox"
+                    name="interests"
+                    value="html"
+                    checked
+                  />
+                  HTML</label
+                >
+                <label
+                  ><input type="checkbox" name="interests" value="css" />
+                  CSS</label
+                >
+                <label
+                  ><input type="checkbox" name="interests" value="js" />
+                  JavaScript</label
+                >
+                <label
+                  ><input type="checkbox" name="interests" value="a11y" />
+                  Accessibility</label
+                >
+              </div>
+            </fieldset>
+
+            <label for="message">
+              Message
+              <textarea
+                id="message"
+                name="message"
+                rows="4"
+                placeholder="Write your message here…"
+              ></textarea>
+            </label>
+
+            <label for="attachment">
+              Attachment
+              <input
+                type="file"
+                id="attachment"
+                name="attachment"
+                accept=".pdf,.doc,.docx"
+              />
+            </label>
+
+            <button type="submit">Send Message</button>
+          </form>
+        </section>
+
+        <!-- ─── INTERACTIVE ─── -->
+        <section id="interactive" aria-labelledby="h-interactive">
+          <h2 id="h-interactive">⚡ Interactive Elements</h2>
+
+          <!-- Details / Summary -->
+          <h3>Details &amp; Summary (native accordion)</h3>
+          <details>
+            <summary>What is semantic HTML?</summary>
+            <p>
+              Semantic HTML means using the correct HTML element for its
+              intended purpose — <code>&lt;nav&gt;</code> for navigation,
+              <code>&lt;article&gt;</code> for standalone content, etc. — rather
+              than generic <code>&lt;div&gt;</code> tags.
+            </p>
+          </details>
+          <details>
+            <summary>Why does accessibility matter?</summary>
+            <p>
+              Over 1 billion people live with a disability. Accessible HTML
+              ensures screen readers, keyboard users, and other assistive
+              technologies can use your content. It also improves SEO and
+              overall code quality.
+            </p>
+          </details>
+          <details>
+            <summary>
+              What is the difference between &lt;strong&gt; and &lt;b&gt;?
+            </summary>
+            <p>
+              <code>&lt;strong&gt;</code> conveys semantic
+              <em>importance</em> (screen readers may announce it).
+              <code>&lt;b&gt;</code> is purely stylistic bold with no extra
+              meaning. Prefer <code>&lt;strong&gt;</code>.
+            </p>
+          </details>
+
+          <!-- Progress & Meter -->
+          <h3>Progress &amp; Meter</h3>
+          <div role="group" aria-label="Skill levels">
+            <div class="meter-row">
+              <span class="meter-label">HTML</span>
+              <progress
+                value="92"
+                max="100"
+                aria-label="HTML skill: 92%"
+              ></progress>
+              <span class="meter-val">92%</span>
+            </div>
+            <div class="meter-row">
+              <span class="meter-label">CSS</span>
+              <progress
+                value="78"
+                max="100"
+                aria-label="CSS skill: 78%"
+              ></progress>
+              <span class="meter-val">78%</span>
+            </div>
+            <div class="meter-row">
+              <span class="meter-label">Disk usage</span>
+              <meter
+                value="7.2"
+                min="0"
+                max="10"
+                low="4"
+                high="8"
+                optimum="2"
+                aria-label="Disk usage: 7.2 of 10 GB"
+              ></meter>
+              <span class="meter-val">7.2 GB</span>
+            </div>
+          </div>
+
+          <!-- Dialog -->
+          <h3>Dialog <code>&lt;dialog&gt;</code></h3>
+          <button
+            id="open-dialog-btn"
+            aria-haspopup="dialog"
+            onclick="document.getElementById('demo-dialog').showModal()"
+          >
+            Open Modal Dialog
+          </button>
+          <dialog
+            id="demo-dialog"
+            aria-labelledby="dialog-title"
+            aria-describedby="dialog-desc"
+          >
+            <h3 id="dialog-title">Native HTML Dialog</h3>
+            <p id="dialog-desc">
+              This modal uses the native <code>&lt;dialog&gt;</code> element
+              with <code>.showModal()</code>. It traps focus, responds to
+              <kbd>Escape</kbd>, and renders a backdrop — no JavaScript library
+              needed.
+            </p>
+            <div class="dialog-actions">
+              <button
+                class="btn-ghost"
+                onclick="document.getElementById('demo-dialog').close()"
+              >
+                Cancel
+              </button>
+              <button
+                class="btn-primary"
+                onclick="document.getElementById('demo-dialog').close()"
+              >
+                Confirm
+              </button>
+            </div>
+          </dialog>
+        </section>
+
+        <!-- ─── METADATA ─── -->
+        <section id="metadata" aria-labelledby="h-metadata">
+          <h2 id="h-metadata">🗂️ Metadata &amp; Miscellaneous</h2>
+
+          <!-- Time -->
+          <h3>Time Element</h3>
+          <p>
+            This page was last updated on
+            <time datetime="2026-04-26T00:00:00Z">26 April 2026</time>.
+          </p>
+          <p>
+            The event starts at
+            <time datetime="2026-05-01T09:00">09:00 on 1 May 2026</time>.
+          </p>
+
+          <!-- Address -->
+          <h3>Address</h3>
+          <address>
+            <strong>Jane Doe</strong><br />
+            123 Semantic Street<br />
+            Web City, WC1 4HTML<br />
+            <a href="mailto:jane@example.com">jane@example.com</a><br />
+            <a href="tel:+441234567890">+44 1234 567890</a>
+          </address>
+
+          <!-- Data / Abbr / Dfn -->
+          <h3>Data, Abbr &amp; Dfn</h3>
+          <p>
+            A
+            <dfn id="dfn-html"
+              >HyperText Markup Language (<abbr
+                title="HyperText Markup Language"
+                >HTML</abbr
+              >)</dfn
+            >
+            document has a <data value="1">single</data> root element.
+          </p>
+
+          <!-- Output -->
+          <h3>Output Element</h3>
+          <p>
+            The <code>&lt;output&gt;</code> element displays the result of a
+            calculation. Try the range slider in the Forms section — its live
+            value is shown using <code>&lt;output&gt;</code>.
+          </p>
+        </section>
+      </main>
+
+      <!-- ════════ SIDEBAR ════════ -->
+      <aside aria-labelledby="h-aside">
+        <h2 id="h-aside">📑 On this page</h2>
+        <nav aria-label="Page sections">
+          <ul>
+            <li><a href="#structure">🏛️ Structural Elements</a></li>
+            <li><a href="#text">✏️ Text Content</a></li>
+            <li><a href="#media">🖼️ Media Elements</a></li>
+            <li><a href="#tables">📊 Tables</a></li>
+            <li><a href="#forms">📝 Forms</a></li>
+            <li><a href="#interactive">⚡ Interactive</a></li>
+            <li><a href="#metadata">🗂️ Metadata</a></li>
+          </ul>
+        </nav>
+
+        <!-- Search widget -->
+        <form role="search" aria-label="Site search" style="margin-top: 20px">
+          <label
+            for="search"
+            style="
+              font-size: 0.8rem;
+              color: var(--muted);
+              display: block;
+              margin-bottom: 6px;
+            "
+            >Search elements</label
+          >
+          <input
+            type="search"
+            id="search"
+            name="q"
+            placeholder="e.g. article…"
+            style="width: 100%"
+          />
+        </form>
+
+        <!-- Quick facts -->
+        <section
+          aria-labelledby="h-facts"
+          style="margin-top: 20px; border: none; padding: 0; background: none"
+        >
+          <h2
+            id="h-facts"
+            style="
+              font-size: 0.875rem;
+              border-bottom: 1px solid var(--border);
+              padding-bottom: 8px;
+              margin-bottom: 10px;
+            "
+          >
+            Quick Facts
+          </h2>
+          <dl class="styled" style="font-size: 0.8rem">
+            <dt>Standard</dt>
+            <dd>HTML Living Standard</dd>
+            <dt>Maintained by</dt>
+            <dd>WHATWG</dd>
+            <dt>Semantic tags</dt>
+            <dd>30+ in HTML5</dd>
+            <dt>Current date</dt>
+            <dd><time datetime="2026-04-26">26 Apr 2026</time></dd>
+          </dl>
+        </section>
+      </aside>
+    </div>
+    <!-- /.shell -->
+
+    <!-- ══════════ SITE FOOTER ══════════ -->
+    <footer class="site-footer">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h3>Learn</h3>
+          <ul>
+            <li>
+              <a
+                href="https://developer.mozilla.org/en-US/docs/Web/HTML"
+                target="_blank"
+                rel="noopener noreferrer"
+                >MDN Web Docs</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://html.spec.whatwg.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+                >HTML Living Standard</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://www.w3.org/TR/html52/"
+                target="_blank"
+                rel="noopener noreferrer"
+                >W3C HTML 5.2</a
+              >
+            </li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3>Validate</h3>
+          <ul>
+            <li>
+              <a
+                href="https://validator.w3.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+                >W3C Validator</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://wave.webaim.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+                >WAVE Accessibility</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://dequeuniversity.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Deque University</a
+              >
+            </li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3>Tools</h3>
+          <ul>
+            <li>
+              <a
+                href="https://codepen.io/"
+                target="_blank"
+                rel="noopener noreferrer"
+                >CodePen</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://caniuse.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Can I Use</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://htmlreference.io/"
+                target="_blank"
+                rel="noopener noreferrer"
+                >HTML Reference</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>
+          Built with pure semantic HTML5 &amp; embedded CSS · No frameworks · No
+          external files
+        </p>
+        <p style="margin-top: 6px">
+          <small>
+            <a
+              href="https://validator.w3.org/"
+              target="_blank"
+              rel="noopener noreferrer"
+              style="color: var(--muted)"
+              >Validate this page</a
+            >
+            &nbsp;·&nbsp;
+            <a
+              href="https://wave.webaim.org/"
+              target="_blank"
+              rel="noopener noreferrer"
+              style="color: var(--muted)"
+              >Check accessibility</a
+            >
+          </small>
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

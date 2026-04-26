@@ -1,0 +1,2187 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JavaScript Learning Path</title>
+    <style>
+      /* ── Reset ── */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* ── Tokens ── */
+      :root {
+        --bg: #0f172a;
+        --surface: #1e293b;
+        --border: #334155;
+        --accent: #f59e0b;
+        --accent2: #f97316;
+        --text: #e2e8f0;
+        --muted: #94a3b8;
+        --green: #4ade80;
+        --red: #f87171;
+        --blue: #60a5fa;
+        --r: 12px;
+        --mono: "Cascadia Code", "Fira Code", Consolas, monospace;
+        --sans: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+      }
+
+      body {
+        font-family: var(--sans);
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.7;
+        min-height: 100vh;
+      }
+
+      /* ── Shell ── */
+      .app {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* ── Sidebar ── */
+      .sidebar {
+        width: 268px;
+        min-width: 268px;
+        background: #13203a;
+        border-right: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow-y: auto;
+      }
+      .sb-logo {
+        padding: 22px 20px 16px;
+        border-bottom: 1px solid var(--border);
+      }
+      .sb-logo .js-icon {
+        display: inline-block;
+        background: #f59e0b;
+        color: #0f172a;
+        font-weight: 900;
+        font-size: 1rem;
+        padding: 3px 8px;
+        border-radius: 6px;
+        margin-right: 6px;
+        font-family: var(--mono);
+      }
+      .sb-logo h2 {
+        display: inline;
+        font-size: 1.05rem;
+        color: #f8fafc;
+        vertical-align: middle;
+      }
+      .sb-logo span {
+        display: block;
+        font-size: 0.75rem;
+        color: var(--muted);
+        margin-top: 4px;
+      }
+
+      .prog-wrap {
+        padding: 14px 20px;
+        border-bottom: 1px solid var(--border);
+      }
+      .prog-label {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.72rem;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+      .prog-bar {
+        background: var(--border);
+        border-radius: 99px;
+        height: 5px;
+      }
+      .prog-fill {
+        background: linear-gradient(90deg, #f59e0b, #f97316);
+        height: 5px;
+        border-radius: 99px;
+        width: 0%;
+        transition: width 0.4s ease;
+      }
+
+      .nav-section {
+        padding: 10px 0 4px;
+      }
+      .nav-section-title {
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #475569;
+        padding: 6px 20px 3px;
+      }
+      .nav-btn {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        width: 100%;
+        text-align: left;
+        background: none;
+        border: none;
+        color: var(--muted);
+        font-size: 0.845rem;
+        padding: 9px 20px;
+        cursor: pointer;
+        transition: all 0.15s;
+        border-left: 3px solid transparent;
+        font-family: var(--sans);
+      }
+      .nav-btn:hover {
+        color: var(--text);
+        background: rgba(255, 255, 255, 0.03);
+      }
+      .nav-btn.active {
+        color: #fcd34d;
+        background: rgba(245, 158, 11, 0.08);
+        border-left-color: #f59e0b;
+      }
+      .nav-btn.done {
+        color: var(--green);
+      }
+      .nav-btn .chk {
+        margin-left: auto;
+        font-size: 0.7rem;
+      }
+
+      /* ── Main ── */
+      .main {
+        flex: 1;
+        padding: 40px 44px 80px;
+        max-width: 900px;
+      }
+      .lesson {
+        display: none;
+      }
+      .lesson.active {
+        display: block;
+        animation: fadeUp 0.3s ease;
+      }
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* ── Lesson header ── */
+      .lh {
+        margin-bottom: 30px;
+      }
+      .lh-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(245, 158, 11, 0.12);
+        border: 1px solid rgba(245, 158, 11, 0.3);
+        color: #fcd34d;
+        font-size: 0.72rem;
+        padding: 4px 12px;
+        border-radius: 99px;
+        margin-bottom: 10px;
+      }
+      .lh h1 {
+        font-size: 1.9rem;
+        color: #f8fafc;
+        font-weight: 800;
+        margin-bottom: 8px;
+      }
+      .lh p {
+        color: var(--muted);
+        font-size: 1rem;
+        max-width: 640px;
+      }
+
+      /* ── Card ── */
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--r);
+        padding: 24px;
+        margin-bottom: 20px;
+      }
+      .card h2 {
+        font-size: 1.05rem;
+        color: #f1f5f9;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .card p,
+      .card li {
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+      .card ul,
+      .card ol {
+        padding-left: 20px;
+      }
+      .card li {
+        margin: 5px 0;
+      }
+
+      /* ── Syntax highlight colors ── */
+      .k {
+        color: #c084fc;
+      } /* keyword */
+      .s {
+        color: #4ade80;
+      } /* string */
+      .n {
+        color: #60a5fa;
+      } /* number */
+      .fn {
+        color: #fbbf24;
+      } /* function name */
+      .cm {
+        color: #475569;
+        font-style: italic;
+      } /* comment */
+      .op {
+        color: #f87171;
+      } /* operator / special */
+      .tx {
+        color: #e2e8f0;
+      } /* plain text */
+
+      /* ── Code block ── */
+      .cb {
+        position: relative;
+        background: #0d1117;
+        border: 1px solid #1e3a5f;
+        border-radius: 8px;
+        overflow: hidden;
+        margin: 12px 0;
+      }
+      .cb-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 7px 14px;
+        background: #0d1117;
+        border-bottom: 1px solid #1e3a5f;
+      }
+      .cb-lang {
+        font-size: 0.68rem;
+        color: #475569;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+      .cp-btn {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        color: var(--muted);
+        font-size: 0.7rem;
+        padding: 3px 9px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-family: var(--sans);
+        transition: all 0.15s;
+      }
+      .cp-btn:hover {
+        background: var(--border);
+        color: var(--text);
+      }
+      .cp-btn.ok {
+        background: #14532d;
+        border-color: #166534;
+        color: var(--green);
+      }
+      pre {
+        padding: 16px;
+        overflow-x: auto;
+      }
+      pre code {
+        font-family: var(--mono);
+        font-size: 0.83rem;
+        line-height: 1.65;
+        background: none;
+        padding: 0;
+        color: var(--text);
+      }
+      code {
+        font-family: var(--mono);
+        font-size: 0.82rem;
+        color: #fbbf24;
+        background: rgba(251, 191, 36, 0.1);
+        padding: 2px 6px;
+        border-radius: 4px;
+      }
+
+      /* ── Info / tip / warn boxes ── */
+      .info {
+        background: rgba(96, 165, 250, 0.08);
+        border-left: 4px solid #3b82f6;
+        border-radius: 0 8px 8px 0;
+        padding: 12px 16px;
+        margin: 12px 0;
+        color: #93c5fd;
+        font-size: 0.875rem;
+      }
+      .tip {
+        background: rgba(74, 222, 128, 0.07);
+        border-left: 4px solid #22c55e;
+        border-radius: 0 8px 8px 0;
+        padding: 12px 16px;
+        margin: 12px 0;
+        color: #86efac;
+        font-size: 0.875rem;
+      }
+      .warn {
+        background: rgba(249, 115, 22, 0.08);
+        border-left: 4px solid #f97316;
+        border-radius: 0 8px 8px 0;
+        padding: 12px 16px;
+        margin: 12px 0;
+        color: #fdba74;
+        font-size: 0.875rem;
+      }
+
+      /* ── Comparison table ── */
+      .tbl {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.855rem;
+        margin-top: 10px;
+      }
+      .tbl th {
+        text-align: left;
+        color: var(--muted);
+        font-weight: 600;
+        padding: 8px 12px;
+        border-bottom: 1px solid var(--border);
+      }
+      .tbl td {
+        padding: 8px 12px;
+        border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+        vertical-align: top;
+        color: var(--muted);
+      }
+      .tbl tr:hover td {
+        background: rgba(255, 255, 255, 0.02);
+      }
+      .pill {
+        background: rgba(96, 165, 250, 0.12);
+        color: #93c5fd;
+        font-family: var(--mono);
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 0.78rem;
+        white-space: nowrap;
+      }
+      .pill.y {
+        background: rgba(74, 222, 128, 0.1);
+        color: #86efac;
+      }
+      .pill.r {
+        background: rgba(248, 113, 113, 0.1);
+        color: #fca5a5;
+      }
+      .pill.o {
+        background: rgba(251, 191, 36, 0.1);
+        color: #fde68a;
+      }
+
+      /* ── Live JS editor ── */
+      .editor-wrap {
+        margin-top: 14px;
+      }
+      .editor-panel {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        border: 1px solid var(--border);
+        border-radius: 0 8px 8px 8px;
+        overflow: hidden;
+      }
+      .ed-tabs {
+        display: flex;
+        gap: 2px;
+      }
+      .ed-tab {
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-bottom: none;
+        color: #64748b;
+        font-size: 0.78rem;
+        padding: 6px 16px;
+        border-radius: 6px 6px 0 0;
+        font-family: var(--sans);
+        cursor: default;
+      }
+      .ed-tab.active {
+        background: var(--surface);
+        color: #fcd34d;
+        border-color: var(--border);
+      }
+      textarea.js-in {
+        background: #0d1117;
+        color: #e2e8f0;
+        border: none;
+        border-right: 1px solid var(--border);
+        font-family: var(--mono);
+        font-size: 0.82rem;
+        padding: 16px;
+        resize: none;
+        height: 180px;
+        outline: none;
+        line-height: 1.65;
+        tab-size: 2;
+      }
+      .console-out {
+        background: #050d1a;
+        padding: 14px 16px;
+        font-family: var(--mono);
+        font-size: 0.82rem;
+        line-height: 1.6;
+        height: 180px;
+        overflow-y: auto;
+        white-space: pre-wrap;
+        word-break: break-all;
+        color: #86efac;
+      }
+      .console-out .co-err {
+        color: #fca5a5;
+      }
+      .console-out .co-warn {
+        color: #fde68a;
+      }
+      .console-out .co-info {
+        color: #93c5fd;
+      }
+      .console-out .co-prompt {
+        color: #475569;
+      }
+      .run-btn {
+        margin-top: 8px;
+        background: linear-gradient(135deg, #f59e0b, #f97316);
+        color: #0f172a;
+        border: none;
+        padding: 9px 22px;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        font-weight: 700;
+        cursor: pointer;
+        font-family: var(--sans);
+        transition: opacity 0.2s;
+      }
+      .run-btn:hover {
+        opacity: 0.85;
+      }
+
+      /* ── Quiz ── */
+      .qcard {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--r);
+        padding: 22px;
+        margin-bottom: 16px;
+      }
+      .qcard h3 {
+        color: #f1f5f9;
+        font-size: 0.95rem;
+        margin-bottom: 14px;
+      }
+      .opts {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+      }
+      .opt {
+        background: var(--bg);
+        border: 1px solid var(--border);
+        color: var(--muted);
+        padding: 9px 14px;
+        border-radius: 7px;
+        cursor: pointer;
+        text-align: left;
+        font-size: 0.855rem;
+        font-family: var(--sans);
+        transition: all 0.15s;
+      }
+      .opt:hover {
+        border-color: #f59e0b;
+        color: var(--text);
+      }
+      .opt.correct {
+        background: #052e16;
+        border-color: #22c55e;
+        color: var(--green);
+        pointer-events: none;
+      }
+      .opt.wrong {
+        background: #431407;
+        border-color: #ef4444;
+        color: var(--red);
+        pointer-events: none;
+      }
+      .opt:disabled {
+        pointer-events: none;
+      }
+      .qfb {
+        margin-top: 9px;
+        font-size: 0.845rem;
+        min-height: 18px;
+      }
+      #quiz-score {
+        margin-top: 14px;
+        font-size: 1rem;
+        font-weight: 700;
+        color: #fcd34d;
+        display: none;
+      }
+
+      /* ── Cheatsheet grid ── */
+      .cheat-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+        gap: 10px;
+        margin-top: 12px;
+      }
+      .cheat-item {
+        background: var(--bg);
+        border: 1px solid #1e3a5f;
+        border-radius: 8px;
+        padding: 11px 13px;
+      }
+      .cheat-item code {
+        color: #f87171;
+        display: block;
+        margin-bottom: 4px;
+        font-size: 0.8rem;
+      }
+      .cheat-item span {
+        color: var(--muted);
+        font-size: 0.78rem;
+      }
+
+      /* ── Lesson nav ── */
+      .lesson-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 44px;
+        padding-top: 24px;
+        border-top: 1px solid var(--border);
+      }
+      .nav-arr {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        color: var(--muted);
+        padding: 9px 18px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 0.855rem;
+        font-family: var(--sans);
+        transition: all 0.15s;
+      }
+      .nav-arr:hover {
+        border-color: #f59e0b;
+        color: #fcd34d;
+      }
+      .nav-arr:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+      }
+      .dots {
+        display: flex;
+        gap: 5px;
+      }
+      .dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--border);
+        transition: background 0.2s;
+      }
+      .dot.active {
+        background: #f59e0b;
+      }
+      .dot.done {
+        background: var(--green);
+      }
+
+      /* ── Scrollbar ── */
+      ::-webkit-scrollbar {
+        width: 5px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--bg);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: 3px;
+      }
+
+      /* ── Responsive ── */
+      @media (max-width: 780px) {
+        .sidebar {
+          display: none;
+        }
+        .main {
+          padding: 20px 16px 60px;
+        }
+        .editor-panel {
+          grid-template-columns: 1fr;
+        }
+        textarea.js-in {
+          height: 140px;
+        }
+        .console-out {
+          height: 100px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <!-- ══════ SIDEBAR ══════ -->
+      <nav class="sidebar" aria-label="Course navigation">
+        <div class="sb-logo">
+          <span class="js-icon">JS</span>
+          <h2>Learning Path</h2>
+          <span>10 interactive lessons</span>
+        </div>
+        <div class="prog-wrap">
+          <div class="prog-label">
+            <span>Progress</span><span id="prog-text">0 / 10</span>
+          </div>
+          <div class="prog-bar">
+            <div class="prog-fill" id="prog-fill"></div>
+          </div>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Foundations</div>
+          <button class="nav-btn active" data-l="0">
+            <span>📌</span> What is JavaScript?
+            <span class="chk" id="chk-0"></span>
+          </button>
+          <button class="nav-btn" data-l="1">
+            <span>📦</span> Variables &amp; let/const
+            <span class="chk" id="chk-1"></span>
+          </button>
+          <button class="nav-btn" data-l="2">
+            <span>🔤</span> Data Types <span class="chk" id="chk-2"></span>
+          </button>
+          <button class="nav-btn" data-l="3">
+            <span>⚙️</span> Operators <span class="chk" id="chk-3"></span>
+          </button>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Core Concepts</div>
+          <button class="nav-btn" data-l="4">
+            <span>🔀</span> Control Flow <span class="chk" id="chk-4"></span>
+          </button>
+          <button class="nav-btn" data-l="5">
+            <span>🔁</span> Loops <span class="chk" id="chk-5"></span>
+          </button>
+          <button class="nav-btn" data-l="6">
+            <span>🎯</span> Functions <span class="chk" id="chk-6"></span>
+          </button>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Data Structures</div>
+          <button class="nav-btn" data-l="7">
+            <span>📋</span> Arrays <span class="chk" id="chk-7"></span>
+          </button>
+          <button class="nav-btn" data-l="8">
+            <span>🗂️</span> Objects <span class="chk" id="chk-8"></span>
+          </button>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Finish Line</div>
+          <button class="nav-btn" data-l="9">
+            <span>🏆</span> Quiz &amp; Cheatsheet
+            <span class="chk" id="chk-9"></span>
+          </button>
+        </div>
+      </nav>
+
+      <!-- ══════ MAIN ══════ -->
+      <main class="main">
+        <!-- ── LESSON 0: What is JS ── -->
+        <article class="lesson active" id="lesson-0">
+          <div class="lh">
+            <div class="lh-badge">📌 Lesson 1 of 10</div>
+            <h1>What is JavaScript?</h1>
+            <p>
+              JavaScript is the programming language of the web. It makes pages
+              <strong>interactive</strong> — responding to clicks, fetching
+              data, animating elements, and much more.
+            </p>
+          </div>
+
+          <div class="card">
+            <h2>🌐 The Three Layers of the Web</h2>
+            <table class="tbl">
+              <thead>
+                <tr>
+                  <th>Language</th>
+                  <th>Role</th>
+                  <th>Example</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="pill">HTML</span></td>
+                  <td>Structure &amp; content</td>
+                  <td>Headings, paragraphs, forms</td>
+                </tr>
+                <tr>
+                  <td><span class="pill">CSS</span></td>
+                  <td>Visual styling</td>
+                  <td>Colours, fonts, layout</td>
+                </tr>
+                <tr>
+                  <td><span class="pill o">JavaScript</span></td>
+                  <td>Behaviour &amp; logic</td>
+                  <td>Buttons, animations, APIs</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card">
+            <h2>📝 Your First Line of JavaScript</h2>
+            <p>
+              The most common way to output information while learning is
+              <code>console.log()</code>. Hit <strong>Run</strong> to see it
+              work live.
+            </p>
+            <div class="cb">
+              <div class="cb-head">
+                <span class="cb-lang">javascript</span
+                ><button class="cp-btn" onclick="copyCode(this)">Copy</button>
+              </div>
+              <pre><code><span class="cm">// This is a comment — the browser ignores it</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="s">"Hello, World!"</span>);
+
+<span class="cm">// You can log numbers too</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="n">42</span>);
+
+<span class="cm">// And calculations</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="n">10</span> <span class="op">+</span> <span class="n">5</span>);</code></pre>
+            </div>
+            <div class="editor-wrap">
+              <div class="ed-tabs">
+                <div class="ed-tab active">JS</div>
+                <div class="ed-tab">Output</div>
+              </div>
+              <div class="editor-panel">
+                <textarea class="js-in" id="ed-0" spellcheck="false">
+// Edit me and click Run!
+console.log("Hello, World!");
+console.log(10 + 5);
+console.log("JavaScript is fun!");</textarea
+                >
+                <div class="console-out" id="out-0">
+                  <span class="co-prompt">// Output appears here</span>
+                </div>
+              </div>
+              <button class="run-btn" onclick="runJS('ed-0', 'out-0')">
+                ▶ Run
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>📌 Where Does JavaScript Live?</h2>
+            <div class="cb">
+              <div class="cb-head">
+                <span class="cb-lang">html</span
+                ><button class="cp-btn" onclick="copyCode(this)">Copy</button>
+              </div>
+              <pre><code><span class="cm">&lt;!-- 1. Inline — inside a &lt;script&gt; tag --&gt;</span>
+<span class="tx">&lt;</span><span class="k">script</span><span class="tx">&gt;</span>
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="s">"Inline script"</span>);
+<span class="tx">&lt;/</span><span class="k">script</span><span class="tx">&gt;</span>
+
+<span class="cm">&lt;!-- 2. External file (best practice) --&gt;</span>
+<span class="tx">&lt;</span><span class="k">script</span> <span class="fn">src</span><span class="op">=</span><span class="s">"script.js"</span><span class="tx">&gt;&lt;/</span><span class="k">script</span><span class="tx">&gt;</span></code></pre>
+            </div>
+            <div class="tip">
+              ✅ Place <code>&lt;script&gt;</code> just before
+              <code>&lt;/body&gt;</code> so the HTML loads first.
+            </div>
+          </div>
+
+          <div class="lesson-nav">
+            <button class="nav-arr" onclick="go(-1)" disabled>
+              ← Previous
+            </button>
+            <div class="dots" id="dots-0"></div>
+            <button class="nav-arr" onclick="go(1)">Next →</button>
+          </div>
+        </article>
+
+        <!-- ── LESSON 1: Variables ── -->
+        <article class="lesson" id="lesson-1">
+          <div class="lh">
+            <div class="lh-badge">📦 Lesson 2 of 10</div>
+            <h1>Variables &amp; let / const</h1>
+            <p>
+              Variables are named containers for storing data. In modern
+              JavaScript you use <code>let</code> and <code>const</code> —
+              forget <code>var</code>.
+            </p>
+          </div>
+
+          <div class="card">
+            <h2>📦 let vs const vs var</h2>
+            <table class="tbl">
+              <thead>
+                <tr>
+                  <th>Keyword</th>
+                  <th>Re-assignable?</th>
+                  <th>Block scope?</th>
+                  <th>Use when…</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="pill o">const</span></td>
+                  <td><span class="pill r">No</span></td>
+                  <td><span class="pill y">Yes</span></td>
+                  <td>Value won't change (default choice)</td>
+                </tr>
+                <tr>
+                  <td><span class="pill o">let</span></td>
+                  <td><span class="pill y">Yes</span></td>
+                  <td><span class="pill y">Yes</span></td>
+                  <td>Value will be reassigned</td>
+                </tr>
+                <tr>
+                  <td><span class="pill">var</span></td>
+                  <td><span class="pill y">Yes</span></td>
+                  <td><span class="pill r">No</span></td>
+                  <td>Avoid — legacy code only</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="warn" style="margin-top: 14px">
+              ⚠️ Default to <code>const</code>. Only switch to
+              <code>let</code> when you know the value will change.
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>⚡ Try Variables Live</h2>
+            <div class="editor-wrap">
+              <div class="ed-tabs">
+                <div class="ed-tab active">JS</div>
+                <div class="ed-tab">Output</div>
+              </div>
+              <div class="editor-panel">
+                <textarea class="js-in" id="ed-1" spellcheck="false">
+// const — for values that don't change
+const name = "Alice";
+const age = 25;
+console.log(name, age);
+
+// let — for values that change
+let score = 0;
+score = score + 10;
+console.log("Score:", score);
+
+// Multiple assignment
+const pi = 3.14159;
+const radius = 5;
+const area = pi * radius * radius;
+console.log("Circle area:", area);</textarea
+                >
+                <div class="console-out" id="out-1">
+                  <span class="co-prompt">// Output appears here</span>
+                </div>
+              </div>
+              <button class="run-btn" onclick="runJS('ed-1', 'out-1')">
+                ▶ Run
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>📏 Naming Rules</h2>
+            <div class="cb">
+              <div class="cb-head">
+                <span class="cb-lang">javascript</span
+                ><button class="cp-btn" onclick="copyCode(this)">Copy</button>
+              </div>
+              <pre><code><span class="cm">// ✅ Good — camelCase is the convention</span>
+<span class="k">const</span> <span class="fn">firstName</span> <span class="op">=</span> <span class="s">"Alice"</span>;
+<span class="k">const</span> <span class="fn">totalScore</span> <span class="op">=</span> <span class="n">100</span>;
+<span class="k">const</span> <span class="fn">isLoggedIn</span> <span class="op">=</span> <span class="k">true</span>;
+
+<span class="cm">// ❌ Bad — these cause errors or confusion</span>
+<span class="cm">// const 1name = "bad";   ← cannot start with a number</span>
+<span class="cm">// const my-name = "bad"; ← hyphens not allowed</span>
+<span class="cm">// const class = "bad";   ← reserved keyword</span></code></pre>
+            </div>
+            <div class="info">
+              💡 Use <strong>camelCase</strong> for variables:
+              <code>myVariableName</code>. Use
+              <strong>UPPER_SNAKE_CASE</strong> for true constants:
+              <code>MAX_SIZE = 100</code>.
+            </div>
+          </div>
+
+          <div class="lesson-nav">
+            <button class="nav-arr" onclick="go(-1)">← Previous</button>
+            <div class="dots"></div>
+            <button class="nav-arr" onclick="go(1)">Next →</button>
+          </div>
+        </article>
+
+        <!-- ── LESSON 2: Data Types ── -->
+        <article class="lesson" id="lesson-2">
+          <div class="lh">
+            <div class="lh-badge">🔤 Lesson 3 of 10</div>
+            <h1>Data Types</h1>
+            <p>
+              Every value in JavaScript has a type. Understanding types prevents
+              the most common beginner bugs.
+            </p>
+          </div>
+
+          <div class="card">
+            <h2>🗂️ The 7 Primitive Types</h2>
+            <table class="tbl">
+              <thead>
+                <tr>
+                  <th>Type</th>
+                  <th>Example</th>
+                  <th>Notes</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="pill o">string</span></td>
+                  <td>
+                    <code>"Hello"</code>, <code>'Hi'</code>,
+                    <code>`Hi ${name}`</code>
+                  </td>
+                  <td>Text in quotes</td>
+                </tr>
+                <tr>
+                  <td><span class="pill o">number</span></td>
+                  <td><code>42</code>, <code>3.14</code>, <code>-7</code></td>
+                  <td>All numbers (int + float)</td>
+                </tr>
+                <tr>
+                  <td><span class="pill o">boolean</span></td>
+                  <td><code>true</code>, <code>false</code></td>
+                  <td>Yes/No, on/off</td>
+                </tr>
+                <tr>
+                  <td><span class="pill">undefined</span></td>
+                  <td><code>let x;</code> → <code>undefined</code></td>
+                  <td>Declared but not assigned</td>
+                </tr>
+                <tr>
+                  <td><span class="pill">null</span></td>
+                  <td><code>let x = null;</code></td>
+                  <td>Intentional empty value</td>
+                </tr>
+                <tr>
+                  <td><span class="pill">bigint</span></td>
+                  <td><code>9007199254740991n</code></td>
+                  <td>Very large integers</td>
+                </tr>
+                <tr>
+                  <td><span class="pill">symbol</span></td>
+                  <td><code>Symbol("id")</code></td>
+                  <td>Unique identifiers</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="info" style="margin-top: 12px">
+              💡 Plus one complex type: <code>object</code> (which includes
+              arrays, functions, and plain objects).
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>⚡ Try Data Types Live</h2>
+            <div class="editor-wrap">
+              <div class="ed-tabs">
+                <div class="ed-tab active">JS</div>
+                <div class="ed-tab">Output</div>
+              </div>
+              <div class="editor-panel">
+                <textarea class="js-in" id="ed-2" spellcheck="false">
+// typeof tells you the type of a value
+console.log(typeof "hello");     // string
+console.log(typeof 42);          // number
+console.log(typeof true);        // boolean
+console.log(typeof undefined);   // undefined
+console.log(typeof null);        // object (quirk!)
+
+// Template literals (backtick strings)
+const name = "Alice";
+const age = 25;
+console.log(`${name} is ${age} years old`);
+
+// Type conversion
+console.log(Number("42"));   // 42
+console.log(String(100));    // "100"
+console.log(Boolean(0));     // false
+console.log(Boolean("hi")); // true</textarea
+                >
+                <div class="console-out" id="out-2">
+                  <span class="co-prompt">// Output appears here</span>
+                </div>
+              </div>
+              <button class="run-btn" onclick="runJS('ed-2', 'out-2')">
+                ▶ Run
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>🎯 Truthy &amp; Falsy</h2>
+            <p>
+              These values are <strong style="color: #fca5a5">falsy</strong> —
+              everything else is truthy:
+            </p>
+            <div class="cb">
+              <div class="cb-head">
+                <span class="cb-lang">javascript</span
+                ><button class="cp-btn" onclick="copyCode(this)">Copy</button>
+              </div>
+              <pre><code><span class="cm">// The 6 falsy values in JavaScript:</span>
+<span class="k">false</span>, <span class="n">0</span>, <span class="s">""</span>, <span class="k">null</span>, <span class="k">undefined</span>, <span class="fn">NaN</span>
+
+<span class="cm">// Everything else is truthy — including:</span>
+<span class="s">"0"</span>  <span class="cm">// non-empty string — truthy!</span>
+<span class="n">[]</span>   <span class="cm">// empty array — truthy!</span>
+<span class="n">{}</span>   <span class="cm">// empty object — truthy!</span></code></pre>
+            </div>
+          </div>
+
+          <div class="lesson-nav">
+            <button class="nav-arr" onclick="go(-1)">← Previous</button>
+            <div class="dots"></div>
+            <button class="nav-arr" onclick="go(1)">Next →</button>
+          </div>
+        </article>
+
+        <!-- ── LESSON 3: Operators ── -->
+        <article class="lesson" id="lesson-3">
+          <div class="lh">
+            <div class="lh-badge">⚙️ Lesson 4 of 10</div>
+            <h1>Operators</h1>
+            <p>
+              Operators let you perform calculations, compare values, and
+              combine logic.
+            </p>
+          </div>
+
+          <div class="card">
+            <h2>🔢 Arithmetic Operators</h2>
+            <table class="tbl">
+              <thead>
+                <tr>
+                  <th>Operator</th>
+                  <th>Meaning</th>
+                  <th>Example</th>
+                  <th>Result</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>+</code></td>
+                  <td>Add</td>
+                  <td><code>5 + 3</code></td>
+                  <td>8</td>
+                </tr>
+                <tr>
+                  <td><code>-</code></td>
+                  <td>Subtract</td>
+                  <td><code>5 - 3</code></td>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <td><code>*</code></td>
+                  <td>Multiply</td>
+                  <td><code>5 * 3</code></td>
+                  <td>15</td>
+                </tr>
+                <tr>
+                  <td><code>/</code></td>
+                  <td>Divide</td>
+                  <td><code>10 / 4</code></td>
+                  <td>2.5</td>
+                </tr>
+                <tr>
+                  <td><code>%</code></td>
+                  <td>Remainder (modulo)</td>
+                  <td><code>10 % 3</code></td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td><code>**</code></td>
+                  <td>Exponent</td>
+                  <td><code>2 ** 8</code></td>
+                  <td>256</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card">
+            <h2>⚖️ Comparison &amp; Equality</h2>
+            <div class="cb">
+              <div class="cb-head">
+                <span class="cb-lang">javascript</span
+                ><button class="cp-btn" onclick="copyCode(this)">Copy</button>
+              </div>
+              <pre><code><span class="cm">// === strict equality (value AND type)</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="n">5</span> <span class="op">===</span> <span class="n">5</span>);    <span class="cm">// true</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="n">5</span> <span class="op">===</span> <span class="s">"5"</span>);  <span class="cm">// false ← different types</span>
+
+<span class="cm">// == loose equality (coerces types — avoid!)</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="n">5</span> <span class="op">==</span> <span class="s">"5"</span>);   <span class="cm">// true ← surprising!</span>
+
+<span class="cm">// Other comparisons</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="n">10</span> <span class="op">></span> <span class="n">5</span>);     <span class="cm">// true</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="n">3</span> <span class="op">!==</span> <span class="n">4</span>);    <span class="cm">// true</span></code></pre>
+            </div>
+            <div class="warn">
+              ⚠️ Always use <code>===</code> (triple equals), never
+              <code>==</code>. Triple equals checks both value
+              <em>and</em> type.
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>⚡ Try Operators Live</h2>
+            <div class="editor-wrap">
+              <div class="ed-tabs">
+                <div class="ed-tab active">JS</div>
+                <div class="ed-tab">Output</div>
+              </div>
+              <div class="editor-panel">
+                <textarea class="js-in" id="ed-3" spellcheck="false">
+// Arithmetic
+console.log(2 ** 10);        // 1024
+console.log(17 % 5);         // 2 (remainder)
+
+// String concatenation with +
+const first = "Java";
+const second = "Script";
+console.log(first + second); // JavaScript
+
+// Shorthand assignment
+let x = 10;
+x += 5;   // same as x = x + 5
+x *= 2;   // same as x = x * 2
+console.log(x);              // 30
+
+// Logical operators
+console.log(true && false);  // false (AND)
+console.log(true || false);  // true  (OR)
+console.log(!true);          // false (NOT)</textarea
+                >
+                <div class="console-out" id="out-3">
+                  <span class="co-prompt">// Output appears here</span>
+                </div>
+              </div>
+              <button class="run-btn" onclick="runJS('ed-3', 'out-3')">
+                ▶ Run
+              </button>
+            </div>
+          </div>
+
+          <div class="lesson-nav">
+            <button class="nav-arr" onclick="go(-1)">← Previous</button>
+            <div class="dots"></div>
+            <button class="nav-arr" onclick="go(1)">Next →</button>
+          </div>
+        </article>
+
+        <!-- ── LESSON 4: Control Flow ── -->
+        <article class="lesson" id="lesson-4">
+          <div class="lh">
+            <div class="lh-badge">🔀 Lesson 5 of 10</div>
+            <h1>Control Flow</h1>
+            <p>
+              Control flow lets your program make decisions — running different
+              code depending on conditions.
+            </p>
+          </div>
+
+          <div class="card">
+            <h2>🔀 if / else if / else</h2>
+            <div class="cb">
+              <div class="cb-head">
+                <span class="cb-lang">javascript</span
+                ><button class="cp-btn" onclick="copyCode(this)">Copy</button>
+              </div>
+              <pre><code><span class="k">const</span> <span class="fn">score</span> <span class="op">=</span> <span class="n">72</span>;
+
+<span class="k">if</span> (score <span class="op">>=</span> <span class="n">90</span>) {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="s">"Grade: A"</span>);
+} <span class="k">else if</span> (score <span class="op">>=</span> <span class="n">70</span>) {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="s">"Grade: B"</span>);
+} <span class="k">else if</span> (score <span class="op">>=</span> <span class="n">50</span>) {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="s">"Grade: C"</span>);
+} <span class="k">else</span> {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="s">"Grade: F"</span>);
+}</code></pre>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>❓ Ternary &amp; Switch</h2>
+            <div class="cb">
+              <div class="cb-head">
+                <span class="cb-lang">javascript</span
+                ><button class="cp-btn" onclick="copyCode(this)">Copy</button>
+              </div>
+              <pre><code><span class="cm">// Ternary: condition ? valueIfTrue : valueIfFalse</span>
+<span class="k">const</span> <span class="fn">age</span> <span class="op">=</span> <span class="n">20</span>;
+<span class="k">const</span> <span class="fn">status</span> <span class="op">=</span> age <span class="op">>=</span> <span class="n">18</span> <span class="op">?</span> <span class="s">"adult"</span> <span class="op">:</span> <span class="s">"minor"</span>;
+<span class="fn">console</span>.<span class="fn">log</span>(status); <span class="cm">// "adult"</span>
+
+<span class="cm">// Switch — great for many exact matches</span>
+<span class="k">const</span> <span class="fn">day</span> <span class="op">=</span> <span class="s">"Monday"</span>;
+<span class="k">switch</span> (day) {
+  <span class="k">case</span> <span class="s">"Monday"</span>:
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="s">"Start of the week"</span>); <span class="k">break</span>;
+  <span class="k">case</span> <span class="s">"Friday"</span>:
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="s">"Almost weekend!"</span>); <span class="k">break</span>;
+  <span class="k">default</span>:
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="s">"Midweek"</span>);
+}</code></pre>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>⚡ Try Control Flow Live</h2>
+            <div class="editor-wrap">
+              <div class="ed-tabs">
+                <div class="ed-tab active">JS</div>
+                <div class="ed-tab">Output</div>
+              </div>
+              <div class="editor-panel">
+                <textarea class="js-in" id="ed-4" spellcheck="false">
+// Change the temperature and re-run!
+const temp = 22;
+
+if (temp < 0) {
+  console.log("Freezing!");
+} else if (temp < 10) {
+  console.log("Cold");
+} else if (temp < 20) {
+  console.log("Cool");
+} else if (temp < 30) {
+  console.log("Warm 🌤️");
+} else {
+  console.log("Hot 🔥");
+}
+
+// Ternary
+const hour = 14;
+const greeting = hour < 12 ? "Good morning" : "Good afternoon";
+console.log(greeting);</textarea
+                >
+                <div class="console-out" id="out-4">
+                  <span class="co-prompt">// Output appears here</span>
+                </div>
+              </div>
+              <button class="run-btn" onclick="runJS('ed-4', 'out-4')">
+                ▶ Run
+              </button>
+            </div>
+          </div>
+
+          <div class="lesson-nav">
+            <button class="nav-arr" onclick="go(-1)">← Previous</button>
+            <div class="dots"></div>
+            <button class="nav-arr" onclick="go(1)">Next →</button>
+          </div>
+        </article>
+
+        <!-- ── LESSON 5: Loops ── -->
+        <article class="lesson" id="lesson-5">
+          <div class="lh">
+            <div class="lh-badge">🔁 Lesson 6 of 10</div>
+            <h1>Loops</h1>
+            <p>
+              Loops repeat a block of code — essential for processing lists,
+              counting, and automating repetitive tasks.
+            </p>
+          </div>
+
+          <div class="card">
+            <h2>🔁 for Loop</h2>
+            <div class="cb">
+              <div class="cb-head">
+                <span class="cb-lang">javascript</span
+                ><button class="cp-btn" onclick="copyCode(this)">Copy</button>
+              </div>
+              <pre><code><span class="cm">// for (start; condition; step)</span>
+<span class="k">for</span> (<span class="k">let</span> <span class="fn">i</span> <span class="op">=</span> <span class="n">1</span>; i <span class="op"><=</span> <span class="n">5</span>; i<span class="op">++</span>) {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="s">"Count:"</span>, i);
+}
+<span class="cm">// Prints: Count: 1, Count: 2 ... Count: 5</span></code></pre>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>🔂 while &amp; for...of</h2>
+            <div class="cb">
+              <div class="cb-head">
+                <span class="cb-lang">javascript</span
+                ><button class="cp-btn" onclick="copyCode(this)">Copy</button>
+              </div>
+              <pre><code><span class="cm">// while — runs while condition is true</span>
+<span class="k">let</span> <span class="fn">n</span> <span class="op">=</span> <span class="n">1</span>;
+<span class="k">while</span> (n <span class="op"><=</span> <span class="n">3</span>) {
+  <span class="fn">console</span>.<span class="fn">log</span>(n);
+  n<span class="op">++</span>;
+}
+
+<span class="cm">// for...of — loop over arrays (cleaner!)</span>
+<span class="k">const</span> <span class="fn">fruits</span> <span class="op">=</span> [<span class="s">"apple"</span>, <span class="s">"banana"</span>, <span class="s">"cherry"</span>];
+<span class="k">for</span> (<span class="k">const</span> <span class="fn">fruit</span> <span class="k">of</span> fruits) {
+  <span class="fn">console</span>.<span class="fn">log</span>(fruit);
+}</code></pre>
+            </div>
+            <div class="tip">
+              ✅ Use <code>for...of</code> when looping over arrays — it's
+              cleaner than a traditional <code>for</code> loop.
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>⚡ Try Loops Live</h2>
+            <div class="editor-wrap">
+              <div class="ed-tabs">
+                <div class="ed-tab active">JS</div>
+                <div class="ed-tab">Output</div>
+              </div>
+              <div class="editor-panel">
+                <textarea class="js-in" id="ed-5" spellcheck="false">
+// Times table for 3
+for (let i = 1; i <= 10; i++) {
+  console.log(`3 x ${i} = ${3 * i}`);
+}
+
+// Sum of an array
+const numbers = [10, 20, 30, 40, 50];
+let total = 0;
+for (const num of numbers) {
+  total += num;
+}
+console.log("Total:", total);</textarea
+                >
+                <div class="console-out" id="out-5">
+                  <span class="co-prompt">// Output appears here</span>
+                </div>
+              </div>
+              <button class="run-btn" onclick="runJS('ed-5', 'out-5')">
+                ▶ Run
+              </button>
+            </div>
+          </div>
+
+          <div class="lesson-nav">
+            <button class="nav-arr" onclick="go(-1)">← Previous</button>
+            <div class="dots"></div>
+            <button class="nav-arr" onclick="go(1)">Next →</button>
+          </div>
+        </article>
+
+        <!-- ── LESSON 6: Functions ── -->
+        <article class="lesson" id="lesson-6">
+          <div class="lh">
+            <div class="lh-badge">🎯 Lesson 7 of 10</div>
+            <h1>Functions</h1>
+            <p>
+              Functions are reusable blocks of code. They are the single most
+              important concept in JavaScript.
+            </p>
+          </div>
+
+          <div class="card">
+            <h2>🎯 Three Ways to Write Functions</h2>
+            <div class="cb">
+              <div class="cb-head">
+                <span class="cb-lang">javascript</span
+                ><button class="cp-btn" onclick="copyCode(this)">Copy</button>
+              </div>
+              <pre><code><span class="cm">// 1. Function declaration (hoisted)</span>
+<span class="k">function</span> <span class="fn">greet</span>(name) {
+  <span class="k">return</span> <span class="s">`Hello, ${name}!`</span>;
+}
+
+<span class="cm">// 2. Function expression</span>
+<span class="k">const</span> <span class="fn">double</span> <span class="op">=</span> <span class="k">function</span>(n) {
+  <span class="k">return</span> n <span class="op">*</span> <span class="n">2</span>;
+};
+
+<span class="cm">// 3. Arrow function (modern, concise)</span>
+<span class="k">const</span> <span class="fn">square</span> <span class="op">=</span> (n) <span class="op">=></span> n <span class="op">*</span> n;
+
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="fn">greet</span>(<span class="s">"Alice"</span>));  <span class="cm">// Hello, Alice!</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="fn">double</span>(<span class="n">7</span>));       <span class="cm">// 14</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="fn">square</span>(<span class="n">4</span>));       <span class="cm">// 16</span></code></pre>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>📥 Parameters &amp; Default Values</h2>
+            <div class="cb">
+              <div class="cb-head">
+                <span class="cb-lang">javascript</span
+                ><button class="cp-btn" onclick="copyCode(this)">Copy</button>
+              </div>
+              <pre><code><span class="cm">// Default parameter values</span>
+<span class="k">function</span> <span class="fn">introduce</span>(name, role <span class="op">=</span> <span class="s">"Developer"</span>) {
+  <span class="k">return</span> <span class="s">`${name} is a ${role}`</span>;
+}
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="fn">introduce</span>(<span class="s">"Alice"</span>));           <span class="cm">// Alice is a Developer</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="fn">introduce</span>(<span class="s">"Bob"</span>, <span class="s">"Designer"</span>)); <span class="cm">// Bob is a Designer</span></code></pre>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>⚡ Try Functions Live</h2>
+            <div class="editor-wrap">
+              <div class="ed-tabs">
+                <div class="ed-tab active">JS</div>
+                <div class="ed-tab">Output</div>
+              </div>
+              <div class="editor-panel">
+                <textarea class="js-in" id="ed-6" spellcheck="false">
+// Arrow function
+const add = (a, b) => a + b;
+console.log(add(3, 7));       // 10
+
+// Function with multiple steps
+function celsiusToFahrenheit(c) {
+  return (c * 9/5) + 32;
+}
+console.log(celsiusToFahrenheit(0));   // 32
+console.log(celsiusToFahrenheit(100)); // 212
+
+// Functions calling functions
+const multiplyThenAdd = (a, b, extra) => add(a * b, extra);
+console.log(multiplyThenAdd(3, 4, 2)); // 14</textarea
+                >
+                <div class="console-out" id="out-6">
+                  <span class="co-prompt">// Output appears here</span>
+                </div>
+              </div>
+              <button class="run-btn" onclick="runJS('ed-6', 'out-6')">
+                ▶ Run
+              </button>
+            </div>
+          </div>
+
+          <div class="lesson-nav">
+            <button class="nav-arr" onclick="go(-1)">← Previous</button>
+            <div class="dots"></div>
+            <button class="nav-arr" onclick="go(1)">Next →</button>
+          </div>
+        </article>
+
+        <!-- ── LESSON 7: Arrays ── -->
+        <article class="lesson" id="lesson-7">
+          <div class="lh">
+            <div class="lh-badge">📋 Lesson 8 of 10</div>
+            <h1>Arrays</h1>
+            <p>
+              Arrays store ordered lists of values. They come with powerful
+              built-in methods that you'll use in nearly every program.
+            </p>
+          </div>
+
+          <div class="card">
+            <h2>📋 Array Basics</h2>
+            <div class="cb">
+              <div class="cb-head">
+                <span class="cb-lang">javascript</span
+                ><button class="cp-btn" onclick="copyCode(this)">Copy</button>
+              </div>
+              <pre><code><span class="k">const</span> <span class="fn">fruits</span> <span class="op">=</span> [<span class="s">"apple"</span>, <span class="s">"banana"</span>, <span class="s">"cherry"</span>];
+
+<span class="fn">console</span>.<span class="fn">log</span>(fruits[<span class="n">0</span>]);        <span class="cm">// "apple" (index starts at 0)</span>
+<span class="fn">console</span>.<span class="fn">log</span>(fruits.<span class="fn">length</span>);    <span class="cm">// 3</span>
+
+fruits.<span class="fn">push</span>(<span class="s">"mango"</span>);          <span class="cm">// add to end</span>
+fruits.<span class="fn">pop</span>();                   <span class="cm">// remove from end</span>
+fruits.<span class="fn">unshift</span>(<span class="s">"lemon"</span>);      <span class="cm">// add to start</span>
+fruits.<span class="fn">shift</span>();                 <span class="cm">// remove from start</span></code></pre>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>🔧 The Big Three Array Methods</h2>
+            <div class="cb">
+              <div class="cb-head">
+                <span class="cb-lang">javascript</span
+                ><button class="cp-btn" onclick="copyCode(this)">Copy</button>
+              </div>
+              <pre><code><span class="k">const</span> <span class="fn">nums</span> <span class="op">=</span> [<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>, <span class="n">4</span>, <span class="n">5</span>];
+
+<span class="cm">// map — transform every element</span>
+<span class="k">const</span> <span class="fn">doubled</span> <span class="op">=</span> nums.<span class="fn">map</span>(n <span class="op">=></span> n <span class="op">*</span> <span class="n">2</span>);
+<span class="fn">console</span>.<span class="fn">log</span>(doubled); <span class="cm">// [2, 4, 6, 8, 10]</span>
+
+<span class="cm">// filter — keep only matching elements</span>
+<span class="k">const</span> <span class="fn">evens</span> <span class="op">=</span> nums.<span class="fn">filter</span>(n <span class="op">=></span> n <span class="op">%</span> <span class="n">2</span> <span class="op">===</span> <span class="n">0</span>);
+<span class="fn">console</span>.<span class="fn">log</span>(evens);   <span class="cm">// [2, 4]</span>
+
+<span class="cm">// reduce — collapse to a single value</span>
+<span class="k">const</span> <span class="fn">sum</span> <span class="op">=</span> nums.<span class="fn">reduce</span>((acc, n) <span class="op">=></span> acc <span class="op">+</span> n, <span class="n">0</span>);
+<span class="fn">console</span>.<span class="fn">log</span>(sum);     <span class="cm">// 15</span></code></pre>
+            </div>
+            <div class="tip">
+              ✅ <code>map</code>, <code>filter</code>, and
+              <code>reduce</code> are the most important array methods. Master
+              these and you can do almost anything with data.
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>⚡ Try Arrays Live</h2>
+            <div class="editor-wrap">
+              <div class="ed-tabs">
+                <div class="ed-tab active">JS</div>
+                <div class="ed-tab">Output</div>
+              </div>
+              <div class="editor-panel">
+                <textarea class="js-in" id="ed-7" spellcheck="false">
+const scores = [45, 82, 91, 60, 73, 88, 55];
+
+// Find passing scores (>= 60)
+const passing = scores.filter(s => s >= 60);
+console.log("Passing:", passing);
+
+// Convert to letter grades
+const grades = scores.map(s => s >= 70 ? "Pass" : "Fail");
+console.log("Grades:", grades);
+
+// Average score
+const avg = scores.reduce((a, b) => a + b, 0) / scores.length;
+console.log("Average:", avg.toFixed(1));
+
+// Check if anyone scored 100
+console.log("Perfect score?", scores.includes(100));
+console.log("Highest:", Math.max(...scores));</textarea
+                >
+                <div class="console-out" id="out-7">
+                  <span class="co-prompt">// Output appears here</span>
+                </div>
+              </div>
+              <button class="run-btn" onclick="runJS('ed-7', 'out-7')">
+                ▶ Run
+              </button>
+            </div>
+          </div>
+
+          <div class="lesson-nav">
+            <button class="nav-arr" onclick="go(-1)">← Previous</button>
+            <div class="dots"></div>
+            <button class="nav-arr" onclick="go(1)">Next →</button>
+          </div>
+        </article>
+
+        <!-- ── LESSON 8: Objects ── -->
+        <article class="lesson" id="lesson-8">
+          <div class="lh">
+            <div class="lh-badge">🗂️ Lesson 9 of 10</div>
+            <h1>Objects</h1>
+            <p>
+              Objects store data as key-value pairs. They model real-world
+              things — a user, a product, a blog post.
+            </p>
+          </div>
+
+          <div class="card">
+            <h2>🗂️ Creating &amp; Accessing Objects</h2>
+            <div class="cb">
+              <div class="cb-head">
+                <span class="cb-lang">javascript</span
+                ><button class="cp-btn" onclick="copyCode(this)">Copy</button>
+              </div>
+              <pre><code><span class="k">const</span> <span class="fn">user</span> <span class="op">=</span> {
+  name: <span class="s">"Alice"</span>,
+  age:  <span class="n">28</span>,
+  role: <span class="s">"Developer"</span>,
+  isActive: <span class="k">true</span>
+};
+
+<span class="cm">// Dot notation (most common)</span>
+<span class="fn">console</span>.<span class="fn">log</span>(user.name);       <span class="cm">// "Alice"</span>
+
+<span class="cm">// Bracket notation (for dynamic keys)</span>
+<span class="fn">console</span>.<span class="fn">log</span>(user[<span class="s">"role"</span>]);    <span class="cm">// "Developer"</span>
+
+<span class="cm">// Add or update a property</span>
+user.email <span class="op">=</span> <span class="s">"alice@example.com"</span>;
+
+<span class="cm">// Destructuring — extract into variables</span>
+<span class="k">const</span> { name, age } <span class="op">=</span> user;
+<span class="fn">console</span>.<span class="fn">log</span>(name, age);       <span class="cm">// "Alice" 28</span></code></pre>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>🔑 Looping &amp; Spread</h2>
+            <div class="cb">
+              <div class="cb-head">
+                <span class="cb-lang">javascript</span
+                ><button class="cp-btn" onclick="copyCode(this)">Copy</button>
+              </div>
+              <pre><code><span class="k">const</span> <span class="fn">config</span> <span class="op">=</span> { theme: <span class="s">"dark"</span>, lang: <span class="s">"en"</span>, size: <span class="n">14</span> };
+
+<span class="cm">// for...in — loop over object keys</span>
+<span class="k">for</span> (<span class="k">const</span> key <span class="k">in</span> config) {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="s">`${key}: ${config[key]}`</span>);
+}
+
+<span class="cm">// Spread — copy/merge objects</span>
+<span class="k">const</span> <span class="fn">updated</span> <span class="op">=</span> { <span class="op">...</span>config, size: <span class="n">16</span>, color: <span class="s">"blue"</span> };
+<span class="fn">console</span>.<span class="fn">log</span>(updated);</code></pre>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>⚡ Try Objects Live</h2>
+            <div class="editor-wrap">
+              <div class="ed-tabs">
+                <div class="ed-tab active">JS</div>
+                <div class="ed-tab">Output</div>
+              </div>
+              <div class="editor-panel">
+                <textarea class="js-in" id="ed-8" spellcheck="false">
+// Array of objects — very common pattern!
+const products = [
+  { name: "Laptop",  price: 999,  inStock: true  },
+  { name: "Monitor", price: 349,  inStock: true  },
+  { name: "Keyboard",price: 79,   inStock: false },
+  { name: "Mouse",   price: 49,   inStock: true  },
+];
+
+// Find in-stock items under £500
+const affordable = products
+  .filter(p => p.inStock && p.price < 500)
+  .map(p => `${p.name} — £${p.price}`);
+
+console.log("Affordable in-stock items:");
+affordable.forEach(item => console.log(" •", item));
+
+// Total value of all stock
+const total = products.reduce((sum, p) => sum + p.price, 0);
+console.log("Catalogue total: £" + total);</textarea
+                >
+                <div class="console-out" id="out-8">
+                  <span class="co-prompt">// Output appears here</span>
+                </div>
+              </div>
+              <button class="run-btn" onclick="runJS('ed-8', 'out-8')">
+                ▶ Run
+              </button>
+            </div>
+          </div>
+
+          <div class="lesson-nav">
+            <button class="nav-arr" onclick="go(-1)">← Previous</button>
+            <div class="dots"></div>
+            <button class="nav-arr" onclick="go(1)">Next →</button>
+          </div>
+        </article>
+
+        <!-- ── LESSON 9: Quiz & Cheatsheet ── -->
+        <article class="lesson" id="lesson-9">
+          <div class="lh">
+            <div class="lh-badge">🏆 Lesson 10 of 10</div>
+            <h1>Quiz &amp; Cheatsheet</h1>
+            <p>
+              Test what you've learned — then keep the cheatsheet handy as a
+              quick reference.
+            </p>
+          </div>
+
+          <!-- Cheatsheet -->
+          <div class="card">
+            <h2>📋 JavaScript Quick Reference</h2>
+            <div class="cheat-grid">
+              <div class="cheat-item">
+                <code>const x = 5</code><span>Declare constant</span>
+              </div>
+              <div class="cheat-item">
+                <code>let y = 0</code><span>Declare variable</span>
+              </div>
+              <div class="cheat-item">
+                <code>typeof x</code><span>Get type of value</span>
+              </div>
+              <div class="cheat-item">
+                <code>a === b</code><span>Strict equality</span>
+              </div>
+              <div class="cheat-item">
+                <code>if / else</code><span>Conditional branch</span>
+              </div>
+              <div class="cheat-item">
+                <code>x ? a : b</code><span>Ternary operator</span>
+              </div>
+              <div class="cheat-item">
+                <code>for (let i…)</code><span>Counter loop</span>
+              </div>
+              <div class="cheat-item">
+                <code>for (x of arr)</code><span>Array loop</span>
+              </div>
+              <div class="cheat-item">
+                <code>while (cond)</code><span>Condition loop</span>
+              </div>
+              <div class="cheat-item">
+                <code>function f() {}</code><span>Declaration</span>
+              </div>
+              <div class="cheat-item">
+                <code>const f = () =></code><span>Arrow function</span>
+              </div>
+              <div class="cheat-item">
+                <code>arr.push(x)</code><span>Add to array end</span>
+              </div>
+              <div class="cheat-item">
+                <code>arr.pop()</code><span>Remove from end</span>
+              </div>
+              <div class="cheat-item">
+                <code>arr.map(fn)</code><span>Transform array</span>
+              </div>
+              <div class="cheat-item">
+                <code>arr.filter(fn)</code><span>Filter array</span>
+              </div>
+              <div class="cheat-item">
+                <code>arr.reduce(fn)</code><span>Reduce to value</span>
+              </div>
+              <div class="cheat-item">
+                <code>arr.find(fn)</code><span>Find first match</span>
+              </div>
+              <div class="cheat-item">
+                <code>arr.includes(x)</code><span>Check existence</span>
+              </div>
+              <div class="cheat-item">
+                <code>obj.key</code><span>Access property</span>
+              </div>
+              <div class="cheat-item">
+                <code>{ ...obj }</code><span>Spread / copy</span>
+              </div>
+              <div class="cheat-item">
+                <code>const {a} = obj</code><span>Destructure</span>
+              </div>
+              <div class="cheat-item">
+                <code>`${x} text`</code><span>Template literal</span>
+              </div>
+              <div class="cheat-item">
+                <code>console.log()</code><span>Print to console</span>
+              </div>
+              <div class="cheat-item">
+                <code>Math.max(...arr)</code><span>Largest number</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quiz -->
+          <div class="card">
+            <h2>🧠 Knowledge Check — 6 Questions</h2>
+
+            <div class="qcard">
+              <h3>
+                Q1. Which keyword should you use by default for variables?
+              </h3>
+              <div class="opts">
+                <button class="opt" onclick="ans(this, false)">A) var</button>
+                <button class="opt" onclick="ans(this, true)">B) const</button>
+                <button class="opt" onclick="ans(this, false)">C) let</button>
+                <button class="opt" onclick="ans(this, false)">
+                  D) define
+                </button>
+              </div>
+              <div class="qfb"></div>
+            </div>
+
+            <div class="qcard">
+              <h3>Q2. What does <code>===</code> check?</h3>
+              <div class="opts">
+                <button class="opt" onclick="ans(this, false)">
+                  A) Only value equality
+                </button>
+                <button class="opt" onclick="ans(this, true)">
+                  B) Value AND type equality
+                </button>
+                <button class="opt" onclick="ans(this, false)">
+                  C) Assignment
+                </button>
+                <button class="opt" onclick="ans(this, false)">
+                  D) Reference equality only
+                </button>
+              </div>
+              <div class="qfb"></div>
+            </div>
+
+            <div class="qcard">
+              <h3>
+                Q3. What does <code>[1,2,3].map(n => n * 2)</code> return?
+              </h3>
+              <div class="opts">
+                <button class="opt" onclick="ans(this, false)">A) 12</button>
+                <button class="opt" onclick="ans(this, true)">
+                  B) [2, 4, 6]
+                </button>
+                <button class="opt" onclick="ans(this, false)">
+                  C) [1, 2, 3, 2, 4, 6]
+                </button>
+                <button class="opt" onclick="ans(this, false)">
+                  D) undefined
+                </button>
+              </div>
+              <div class="qfb"></div>
+            </div>
+
+            <div class="qcard">
+              <h3>Q4. Which of these is falsy?</h3>
+              <div class="opts">
+                <button class="opt" onclick="ans(this, false)">A) "0"</button>
+                <button class="opt" onclick="ans(this, false)">B) []</button>
+                <button class="opt" onclick="ans(this, true)">C) 0</button>
+                <button class="opt" onclick="ans(this, false)">D) {}</button>
+              </div>
+              <div class="qfb"></div>
+            </div>
+
+            <div class="qcard">
+              <h3>Q5. What does <code>const f = x => x * x</code> do?</h3>
+              <div class="opts">
+                <button class="opt" onclick="ans(this, false)">
+                  A) Multiplies x by a constant
+                </button>
+                <button class="opt" onclick="ans(this, false)">
+                  B) Creates a variable named x
+                </button>
+                <button class="opt" onclick="ans(this, true)">
+                  C) Defines an arrow function that squares its input
+                </button>
+                <button class="opt" onclick="ans(this, false)">
+                  D) Throws a syntax error
+                </button>
+              </div>
+              <div class="qfb"></div>
+            </div>
+
+            <div class="qcard">
+              <h3>
+                Q6. Which method removes elements that don't match a condition?
+              </h3>
+              <div class="opts">
+                <button class="opt" onclick="ans(this, false)">A) map()</button>
+                <button class="opt" onclick="ans(this, true)">
+                  B) filter()
+                </button>
+                <button class="opt" onclick="ans(this, false)">
+                  C) reduce()
+                </button>
+                <button class="opt" onclick="ans(this, false)">
+                  D) find()
+                </button>
+              </div>
+              <div class="qfb"></div>
+            </div>
+
+            <div id="quiz-score"></div>
+          </div>
+
+          <!-- Next steps -->
+          <div class="card" style="text-align: center; padding: 36px 28px">
+            <div style="font-size: 3rem; margin-bottom: 12px">🎉</div>
+            <h2 style="justify-content: center; font-size: 1.4rem">
+              You've completed the JS Learning Path!
+            </h2>
+            <p style="margin-top: 8px">
+              Next steps: DOM manipulation, fetch &amp; APIs, async/await, and a
+              JavaScript framework like React or Vue.
+            </p>
+            <div
+              style="
+                display: flex;
+                gap: 12px;
+                justify-content: center;
+                flex-wrap: wrap;
+                margin-top: 20px;
+              "
+            >
+              <a
+                href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide"
+                target="_blank"
+                rel="noopener noreferrer"
+                style="
+                  background: linear-gradient(135deg, #f59e0b, #f97316);
+                  color: #0f172a;
+                  padding: 10px 22px;
+                  border-radius: 8px;
+                  text-decoration: none;
+                  font-weight: 700;
+                  font-size: 0.875rem;
+                "
+              >
+                MDN JS Guide →
+              </a>
+              <a
+                href="https://javascript.info"
+                target="_blank"
+                rel="noopener noreferrer"
+                style="
+                  background: var(--surface);
+                  color: var(--muted);
+                  border: 1px solid var(--border);
+                  padding: 10px 22px;
+                  border-radius: 8px;
+                  text-decoration: none;
+                  font-weight: 600;
+                  font-size: 0.875rem;
+                "
+              >
+                javascript.info →
+              </a>
+              <a
+                href="https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style="
+                  background: var(--surface);
+                  color: var(--muted);
+                  border: 1px solid var(--border);
+                  padding: 10px 22px;
+                  border-radius: 8px;
+                  text-decoration: none;
+                  font-weight: 600;
+                  font-size: 0.875rem;
+                "
+              >
+                freeCodeCamp →
+              </a>
+            </div>
+          </div>
+
+          <div class="lesson-nav">
+            <button class="nav-arr" onclick="go(-1)">← Previous</button>
+            <div class="dots"></div>
+            <button class="nav-arr" disabled>Next →</button>
+          </div>
+        </article>
+      </main>
+    </div>
+    <!-- /.app -->
+
+    <script>
+      const TOTAL = 10;
+      let cur = 0;
+      const done = new Set();
+
+      /* ── Dots ── */
+      function renderDots() {
+        document.querySelectorAll(".dots").forEach((wrap) => {
+          wrap.innerHTML = "";
+          for (let i = 0; i < TOTAL; i++) {
+            const d = document.createElement("div");
+            d.className =
+              "dot" + (i === cur ? " active" : done.has(i) ? " done" : "");
+            wrap.appendChild(d);
+          }
+        });
+      }
+
+      /* ── Progress ── */
+      function updateProg() {
+        const pct = (done.size / TOTAL) * 100;
+        document.getElementById("prog-fill").style.width = pct + "%";
+        document.getElementById("prog-text").textContent =
+          done.size + " / " + TOTAL;
+      }
+
+      /* ── Navigate ── */
+      function go(dir) {
+        markDone(cur);
+        const next = cur + dir;
+        if (next < 0 || next >= TOTAL) return;
+        switchLesson(next);
+      }
+
+      function markDone(idx) {
+        done.add(idx);
+        const chk = document.getElementById("chk-" + idx);
+        if (chk) chk.textContent = "✓";
+        const btn = document.querySelector('[data-l="' + idx + '"]');
+        if (btn) btn.classList.add("done");
+        updateProg();
+      }
+
+      function switchLesson(idx) {
+        document.getElementById("lesson-" + cur).classList.remove("active");
+        document.getElementById("lesson-" + idx).classList.add("active");
+        document
+          .querySelectorAll(".nav-btn")
+          .forEach((b) => b.classList.remove("active"));
+        const nb = document.querySelector('[data-l="' + idx + '"]');
+        if (nb) nb.classList.add("active");
+        cur = idx;
+        renderDots();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      /* ── Sidebar clicks ── */
+      document.querySelectorAll(".nav-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const t = parseInt(btn.dataset.l);
+          if (t === cur) return;
+          markDone(cur);
+          switchLesson(t);
+        });
+      });
+
+      /* ── Safe JS runner ── */
+      function runJS(edId, outId) {
+        const code = document.getElementById(edId).value;
+        const out = document.getElementById(outId);
+        out.innerHTML = "";
+
+        const logs = [];
+
+        // Capture console.log / warn / error
+        const _log = console.log;
+        const _warn = console.warn;
+        const _err = console.error;
+
+        const fmt = (args) =>
+          args
+            .map((a) => {
+              if (a === null) return "null";
+              if (a === undefined) return "undefined";
+              if (typeof a === "object") {
+                try {
+                  return JSON.stringify(a, null, 2);
+                } catch {
+                  return String(a);
+                }
+              }
+              return String(a);
+            })
+            .join(" ");
+
+        console.log = (...a) => {
+          logs.push({ cls: "", text: fmt(a) });
+          _log(...a);
+        };
+        console.warn = (...a) => {
+          logs.push({ cls: "co-warn", text: fmt(a) });
+          _warn(...a);
+        };
+        console.error = (...a) => {
+          logs.push({ cls: "co-err", text: fmt(a) });
+          _err(...a);
+        };
+
+        try {
+          // eslint-disable-next-line no-new-func
+          new Function(code)();
+        } catch (e) {
+          logs.push({ cls: "co-err", text: "⛔ " + e.message });
+        } finally {
+          console.log = _log;
+          console.warn = _warn;
+          console.error = _err;
+        }
+
+        if (logs.length === 0) {
+          out.innerHTML = '<span class="co-prompt">// No output</span>';
+        } else {
+          out.innerHTML = logs
+            .map((l) => `<div class="${l.cls}">${escHtml(l.text)}</div>`)
+            .join("");
+        }
+      }
+
+      function escHtml(s) {
+        return s
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;");
+      }
+
+      /* ── Copy code ── */
+      function copyCode(btn) {
+        const pre = btn.closest(".cb").querySelector("pre");
+        navigator.clipboard.writeText(pre.innerText).then(() => {
+          btn.textContent = "Copied!";
+          btn.classList.add("ok");
+          setTimeout(() => {
+            btn.textContent = "Copy";
+            btn.classList.remove("ok");
+          }, 1800);
+        });
+      }
+
+      /* ── Quiz ── */
+      let qAnswered = 0,
+        qCorrect = 0;
+      function ans(btn, isRight) {
+        const card = btn.closest(".qcard");
+        if (card.dataset.answered) return;
+        card.dataset.answered = "1";
+        qAnswered++;
+        card.querySelectorAll(".opt").forEach((b) => {
+          b.disabled = true;
+        });
+        const fb = card.querySelector(".qfb");
+        if (isRight) {
+          btn.classList.add("correct");
+          fb.style.color = "#4ade80";
+          fb.textContent = "✓ Correct!";
+          qCorrect++;
+        } else {
+          btn.classList.add("wrong");
+          fb.style.color = "#fca5a5";
+          fb.textContent = "✗ Not quite — review the lesson above.";
+          card.querySelectorAll(".opt").forEach((b) => {
+            if (b.getAttribute("onclick").includes("true"))
+              b.classList.add("correct");
+          });
+        }
+        if (qAnswered === 6) {
+          const el = document.getElementById("quiz-score");
+          el.style.cssText =
+            "display:block;margin-top:16px;font-size:1rem;font-weight:700;color:#fcd34d;";
+          const msg =
+            qCorrect === 6
+              ? "Perfect! 🏆"
+              : qCorrect >= 4
+                ? "Great work! 🎉"
+                : "Keep practising 💪";
+          el.textContent = `🎯 Score: ${qCorrect} / 6 — ${msg}`;
+        }
+      }
+
+      /* ── Init ── */
+      renderDots();
+    </script>
+  </body>
+</html>

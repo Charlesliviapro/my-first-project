@@ -1,0 +1,1769 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Learn HTML – Interactive Guide</title>
+    <style>
+      /* ── Reset & Base ── */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family:
+          system-ui,
+          -apple-system,
+          "Segoe UI",
+          Arial,
+          sans-serif;
+        background: #0f172a;
+        color: #e2e8f0;
+        line-height: 1.7;
+        min-height: 100vh;
+      }
+
+      /* ── Layout Shell ── */
+      .app {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* ── Sidebar ── */
+      .sidebar {
+        width: 260px;
+        min-width: 260px;
+        background: #1e293b;
+        padding: 24px 0;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow-y: auto;
+        border-right: 1px solid #334155;
+      }
+      .sidebar-logo {
+        padding: 0 20px 20px;
+        border-bottom: 1px solid #334155;
+        margin-bottom: 16px;
+      }
+      .sidebar-logo h2 {
+        font-size: 1.15rem;
+        color: #f8fafc;
+      }
+      .sidebar-logo span {
+        font-size: 0.8rem;
+        color: #64748b;
+      }
+      .progress-bar-wrap {
+        padding: 0 20px 16px;
+        border-bottom: 1px solid #334155;
+        margin-bottom: 10px;
+      }
+      .progress-label {
+        font-size: 0.75rem;
+        color: #94a3b8;
+        margin-bottom: 6px;
+        display: flex;
+        justify-content: space-between;
+      }
+      .progress-bar {
+        background: #334155;
+        border-radius: 99px;
+        height: 6px;
+      }
+      .progress-fill {
+        background: linear-gradient(90deg, #6366f1, #a855f7);
+        height: 6px;
+        border-radius: 99px;
+        transition: width 0.4s ease;
+        width: 0%;
+      }
+      .nav-group {
+        margin-bottom: 4px;
+      }
+      .nav-group-title {
+        font-size: 0.68rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #475569;
+        padding: 8px 20px 4px;
+      }
+      .nav-btn {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        text-align: left;
+        background: none;
+        border: none;
+        color: #94a3b8;
+        font-size: 0.875rem;
+        padding: 9px 20px;
+        cursor: pointer;
+        transition: all 0.15s;
+        border-left: 3px solid transparent;
+      }
+      .nav-btn:hover {
+        color: #e2e8f0;
+        background: #0f172a22;
+      }
+      .nav-btn.active {
+        color: #a5b4fc;
+        background: #1e3a5f33;
+        border-left-color: #6366f1;
+      }
+      .nav-btn.done {
+        color: #4ade80;
+      }
+      .nav-btn .check {
+        font-size: 0.7rem;
+        margin-left: auto;
+      }
+
+      /* ── Main Content ── */
+      .main {
+        flex: 1;
+        padding: 40px;
+        max-width: 860px;
+      }
+      .lesson {
+        display: none;
+      }
+      .lesson.active {
+        display: block;
+        animation: fadeIn 0.3s ease;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* ── Lesson Header ── */
+      .lesson-header {
+        margin-bottom: 32px;
+      }
+      .lesson-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #1e293b;
+        border: 1px solid #334155;
+        color: #94a3b8;
+        font-size: 0.75rem;
+        padding: 4px 12px;
+        border-radius: 99px;
+        margin-bottom: 12px;
+      }
+      .lesson-header h1 {
+        font-size: 2rem;
+        color: #f8fafc;
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+      .lesson-header p {
+        color: #94a3b8;
+        font-size: 1.05rem;
+        max-width: 620px;
+      }
+
+      /* ── Cards ── */
+      .card {
+        background: #1e293b;
+        border: 1px solid #334155;
+        border-radius: 12px;
+        padding: 24px;
+        margin-bottom: 20px;
+      }
+      .card h2 {
+        font-size: 1.1rem;
+        color: #f1f5f9;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .card p {
+        color: #94a3b8;
+        margin-bottom: 12px;
+      }
+
+      /* ── Code Blocks ── */
+      .code-block {
+        position: relative;
+        background: #0f172a;
+        border: 1px solid #1e3a5f;
+        border-radius: 8px;
+        overflow: hidden;
+        margin-top: 12px;
+      }
+      .code-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 14px;
+        background: #0f172a;
+        border-bottom: 1px solid #1e3a5f;
+      }
+      .code-lang {
+        font-size: 0.72rem;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+      .copy-btn {
+        background: #1e293b;
+        border: 1px solid #334155;
+        color: #94a3b8;
+        font-size: 0.72rem;
+        padding: 4px 10px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+      .copy-btn:hover {
+        background: #334155;
+        color: #e2e8f0;
+      }
+      .copy-btn.copied {
+        background: #14532d;
+        border-color: #166534;
+        color: #4ade80;
+      }
+      pre {
+        padding: 16px;
+        overflow-x: auto;
+      }
+      code {
+        font-family: "Cascadia Code", "Fira Code", "Consolas", monospace;
+        font-size: 0.875rem;
+        line-height: 1.6;
+      }
+      .hl-tag {
+        color: #f87171;
+      }
+      .hl-attr {
+        color: #fbbf24;
+      }
+      .hl-val {
+        color: #34d399;
+      }
+      .hl-comment {
+        color: #64748b;
+        font-style: italic;
+      }
+      .hl-text {
+        color: #e2e8f0;
+      }
+
+      /* ── Live Editor ── */
+      .editor-wrap {
+        margin-top: 12px;
+      }
+      .editor-tabs {
+        display: flex;
+        gap: 2px;
+        margin-bottom: 0;
+      }
+      .tab-btn {
+        background: #0f172a;
+        border: 1px solid #1e3a5f;
+        border-bottom: none;
+        color: #64748b;
+        font-size: 0.8rem;
+        padding: 6px 16px;
+        cursor: pointer;
+        border-radius: 6px 6px 0 0;
+      }
+      .tab-btn.active {
+        background: #1e293b;
+        color: #a5b4fc;
+        border-color: #334155;
+      }
+      .editor-panel {
+        display: flex;
+        gap: 0;
+        border: 1px solid #334155;
+        border-radius: 0 8px 8px 8px;
+        overflow: hidden;
+      }
+      textarea.html-input {
+        flex: 1;
+        background: #0f172a;
+        color: #e2e8f0;
+        border: none;
+        font-family: "Cascadia Code", "Fira Code", "Consolas", monospace;
+        font-size: 0.83rem;
+        padding: 16px;
+        resize: none;
+        height: 200px;
+        outline: none;
+        line-height: 1.6;
+        border-right: 1px solid #334155;
+      }
+      .preview-pane {
+        flex: 1;
+        background: #ffffff;
+      }
+      iframe.preview-frame {
+        width: 100%;
+        height: 200px;
+        border: none;
+      }
+      .run-btn {
+        display: block;
+        margin-top: 8px;
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        color: #fff;
+        border: none;
+        padding: 9px 22px;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        cursor: pointer;
+        font-weight: 600;
+        transition: opacity 0.2s;
+      }
+      .run-btn:hover {
+        opacity: 0.85;
+      }
+
+      /* ── Info Box ── */
+      .info-box {
+        background: #1e3a5f33;
+        border: 1px solid #1e40af55;
+        border-left: 4px solid #6366f1;
+        border-radius: 8px;
+        padding: 14px 18px;
+        margin: 14px 0;
+        color: #a5b4fc;
+        font-size: 0.9rem;
+      }
+      .warn-box {
+        background: #431407;
+        border: 1px solid #7c2d1255;
+        border-left: 4px solid #f97316;
+        border-radius: 8px;
+        padding: 14px 18px;
+        margin: 14px 0;
+        color: #fdba74;
+        font-size: 0.9rem;
+      }
+      .tip-box {
+        background: #052e16;
+        border: 1px solid #14532d55;
+        border-left: 4px solid #22c55e;
+        border-radius: 8px;
+        padding: 14px 18px;
+        margin: 14px 0;
+        color: #86efac;
+        font-size: 0.9rem;
+      }
+
+      /* ── Tag Reference Table ── */
+      .tag-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 12px;
+        font-size: 0.875rem;
+      }
+      .tag-table th {
+        text-align: left;
+        color: #64748b;
+        font-weight: 600;
+        padding: 8px 12px;
+        border-bottom: 1px solid #334155;
+      }
+      .tag-table td {
+        padding: 9px 12px;
+        border-bottom: 1px solid #1e293b;
+        vertical-align: top;
+      }
+      .tag-table tr:hover td {
+        background: #1e293b;
+      }
+      .tag-pill {
+        background: #1e3a5f;
+        color: #93c5fd;
+        font-family: monospace;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 0.82rem;
+        white-space: nowrap;
+      }
+
+      /* ── Quiz ── */
+      .quiz-card {
+        background: #1e293b;
+        border: 1px solid #334155;
+        border-radius: 12px;
+        padding: 24px;
+        margin-bottom: 20px;
+      }
+      .quiz-card h3 {
+        color: #f1f5f9;
+        margin-bottom: 16px;
+        font-size: 1rem;
+      }
+      .quiz-options {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .quiz-opt {
+        background: #0f172a;
+        border: 1px solid #334155;
+        color: #94a3b8;
+        padding: 10px 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        text-align: left;
+        font-size: 0.875rem;
+        transition: all 0.15s;
+      }
+      .quiz-opt:hover {
+        border-color: #6366f1;
+        color: #e2e8f0;
+      }
+      .quiz-opt.correct {
+        background: #052e16;
+        border-color: #22c55e;
+        color: #4ade80;
+      }
+      .quiz-opt.wrong {
+        background: #431407;
+        border-color: #ef4444;
+        color: #fca5a5;
+      }
+      .quiz-feedback {
+        margin-top: 10px;
+        font-size: 0.875rem;
+        min-height: 20px;
+      }
+
+      /* ── Navigation Footer ── */
+      .lesson-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 40px;
+        padding-top: 24px;
+        border-top: 1px solid #1e293b;
+      }
+      .nav-arrow {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: #1e293b;
+        border: 1px solid #334155;
+        color: #94a3b8;
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 0.875rem;
+        transition: all 0.15s;
+      }
+      .nav-arrow:hover {
+        border-color: #6366f1;
+        color: #a5b4fc;
+      }
+      .nav-arrow:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+      }
+      .lesson-dots {
+        display: flex;
+        gap: 6px;
+      }
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #334155;
+        transition: background 0.2s;
+      }
+      .dot.active {
+        background: #6366f1;
+      }
+      .dot.done {
+        background: #4ade80;
+      }
+
+      /* ── Cheatsheet Grid ── */
+      .cheat-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 12px;
+        margin-top: 12px;
+      }
+      .cheat-item {
+        background: #0f172a;
+        border: 1px solid #1e3a5f;
+        border-radius: 8px;
+        padding: 12px;
+      }
+      .cheat-item code {
+        color: #f87171;
+        font-size: 0.82rem;
+        display: block;
+        margin-bottom: 4px;
+      }
+      .cheat-item span {
+        color: #94a3b8;
+        font-size: 0.8rem;
+      }
+
+      /* ── Scrollbar ── */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #0f172a;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #334155;
+        border-radius: 3px;
+      }
+
+      /* ── Responsive ── */
+      @media (max-width: 768px) {
+        .sidebar {
+          display: none;
+        }
+        .main {
+          padding: 20px;
+        }
+        .editor-panel {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <!-- ══════════ SIDEBAR ══════════ -->
+      <nav class="sidebar">
+        <div class="sidebar-logo">
+          <h2>&#60;&#47;&#62; Learn HTML</h2>
+          <span>Interactive Course</span>
+        </div>
+        <div class="progress-bar-wrap">
+          <div class="progress-label">
+            <span>Progress</span><span id="prog-text">0 / 8</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="prog-fill"></div>
+          </div>
+        </div>
+
+        <div class="nav-group">
+          <div class="nav-group-title">Foundations</div>
+          <button class="nav-btn active" data-lesson="0">
+            <span>📄</span> What is HTML?
+            <span class="check" id="chk-0"></span>
+          </button>
+          <button class="nav-btn" data-lesson="1">
+            <span>🏗️</span> Document Structure
+            <span class="check" id="chk-1"></span>
+          </button>
+          <button class="nav-btn" data-lesson="2">
+            <span>✏️</span> Text &amp; Headings
+            <span class="check" id="chk-2"></span>
+          </button>
+        </div>
+
+        <div class="nav-group">
+          <div class="nav-group-title">Core Elements</div>
+          <button class="nav-btn" data-lesson="3">
+            <span>🔗</span> Links &amp; Images
+            <span class="check" id="chk-3"></span>
+          </button>
+          <button class="nav-btn" data-lesson="4">
+            <span>📋</span> Lists &amp; Tables
+            <span class="check" id="chk-4"></span>
+          </button>
+          <button class="nav-btn" data-lesson="5">
+            <span>📝</span> Forms &amp; Inputs
+            <span class="check" id="chk-5"></span>
+          </button>
+        </div>
+
+        <div class="nav-group">
+          <div class="nav-group-title">Modern HTML</div>
+          <button class="nav-btn" data-lesson="6">
+            <span>🧱</span> Semantic HTML5
+            <span class="check" id="chk-6"></span>
+          </button>
+          <button class="nav-btn" data-lesson="7">
+            <span>🎓</span> Cheatsheet &amp; Quiz
+            <span class="check" id="chk-7"></span>
+          </button>
+        </div>
+      </nav>
+
+      <!-- ══════════ MAIN ══════════ -->
+      <main class="main">
+        <!-- ────────── LESSON 0: What is HTML ────────── -->
+        <article class="lesson active" id="lesson-0">
+          <div class="lesson-header">
+            <div class="lesson-badge">📄 Lesson 1 of 8</div>
+            <h1>What is HTML?</h1>
+            <p>
+              HTML (HyperText Markup Language) is the skeleton of every webpage.
+              It defines the <em>structure</em> and <em>meaning</em> of web
+              content using elements called <strong>tags</strong>.
+            </p>
+          </div>
+
+          <div class="card">
+            <h2>🌐 How a Webpage Works</h2>
+            <p>
+              Every website you visit is built from three core technologies:
+            </p>
+            <table class="tag-table">
+              <thead>
+                <tr>
+                  <th>Language</th>
+                  <th>Role</th>
+                  <th>Analogy</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="tag-pill">HTML</span></td>
+                  <td style="color: #e2e8f0">Structure &amp; content</td>
+                  <td style="color: #94a3b8">Skeleton / blueprint</td>
+                </tr>
+                <tr>
+                  <td><span class="tag-pill">CSS</span></td>
+                  <td style="color: #e2e8f0">Visual styling</td>
+                  <td style="color: #94a3b8">Paint &amp; decoration</td>
+                </tr>
+                <tr>
+                  <td><span class="tag-pill">JavaScript</span></td>
+                  <td style="color: #e2e8f0">Interactivity</td>
+                  <td style="color: #94a3b8">Muscles &amp; movement</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card">
+            <h2>🏷️ Your First HTML Tag</h2>
+            <p>
+              An HTML <strong>element</strong> has an opening tag, content, and
+              a closing tag:
+            </p>
+            <div class="code-block">
+              <div class="code-header">
+                <span class="code-lang">html</span
+                ><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              </div>
+              <pre><code><span class="hl-comment">&lt;!-- Anatomy of an element --&gt;</span>
+<span class="hl-tag">&lt;p&gt;</span><span class="hl-text">Hello, World!</span><span class="hl-tag">&lt;/p&gt;</span>
+
+<span class="hl-comment">&lt;!-- Some tags are self-closing (void elements) --&gt;</span>
+<span class="hl-tag">&lt;br&gt;</span>
+<span class="hl-tag">&lt;hr&gt;</span>
+<span class="hl-tag">&lt;img </span><span class="hl-attr">src</span><span class="hl-text">=</span><span class="hl-val">"photo.jpg"</span><span class="hl-attr"> alt</span><span class="hl-text">=</span><span class="hl-val">"A photo"</span><span class="hl-tag">&gt;</span></code></pre>
+            </div>
+            <div class="info-box">
+              💡 Opening tag = <code>&lt;tagname&gt;</code> &nbsp;|&nbsp;
+              Closing tag = <code>&lt;/tagname&gt;</code> &nbsp;|&nbsp; Void =
+              no closing tag needed
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>⚡ Try It Live</h2>
+            <p>
+              Edit the HTML below and click <strong>Run</strong> to see it
+              render instantly.
+            </p>
+            <div class="editor-wrap">
+              <div class="editor-panel">
+                <textarea class="html-input" id="ed-0" spellcheck="false">
+&lt;h2&gt;Hello, World!&lt;/h2&gt;
+&lt;p&gt;I am learning &lt;strong&gt;HTML&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;HTML stands for &lt;em&gt;HyperText Markup Language&lt;/em&gt;.&lt;/p&gt;</textarea
+                >
+                <iframe class="preview-frame" id="pv-0"></iframe>
+              </div>
+              <button class="run-btn" onclick="runPreview('ed-0', 'pv-0')">
+                ▶ Run
+              </button>
+            </div>
+          </div>
+
+          <div class="lesson-nav">
+            <button
+              class="nav-arrow"
+              onclick="goLesson(-1)"
+              id="btn-prev"
+              disabled
+            >
+              ← Previous
+            </button>
+            <div class="lesson-dots" id="dots"></div>
+            <button class="nav-arrow" onclick="goLesson(1)">Next →</button>
+          </div>
+        </article>
+
+        <!-- ────────── LESSON 1: Document Structure ────────── -->
+        <article class="lesson" id="lesson-1">
+          <div class="lesson-header">
+            <div class="lesson-badge">🏗️ Lesson 2 of 8</div>
+            <h1>Document Structure</h1>
+            <p>
+              Every HTML file follows a standard template. Understanding this
+              skeleton is the foundation of everything you build.
+            </p>
+          </div>
+
+          <div class="card">
+            <h2>📄 The Boilerplate</h2>
+            <p>
+              This is the minimum required structure for any valid HTML page:
+            </p>
+            <div class="code-block">
+              <div class="code-header">
+                <span class="code-lang">html</span
+                ><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              </div>
+              <pre><code><span class="hl-comment">&lt;!-- Tells the browser: "This is HTML5" --&gt;</span>
+<span class="hl-tag">&lt;!DOCTYPE html&gt;</span>
+
+<span class="hl-comment">&lt;!-- Root element, lang helps screen readers --&gt;</span>
+<span class="hl-tag">&lt;html </span><span class="hl-attr">lang</span><span class="hl-text">=</span><span class="hl-val">"en"</span><span class="hl-tag">&gt;</span>
+
+  <span class="hl-tag">&lt;head&gt;</span>
+    <span class="hl-comment">&lt;!-- Character encoding: always UTF-8 --&gt;</span>
+    <span class="hl-tag">&lt;meta </span><span class="hl-attr">charset</span><span class="hl-text">=</span><span class="hl-val">"UTF-8"</span><span class="hl-tag">&gt;</span>
+    <span class="hl-comment">&lt;!-- Responsive on mobile devices --&gt;</span>
+    <span class="hl-tag">&lt;meta </span><span class="hl-attr">name</span><span class="hl-text">=</span><span class="hl-val">"viewport"</span><span class="hl-attr"> content</span><span class="hl-text">=</span><span class="hl-val">"width=device-width, initial-scale=1.0"</span><span class="hl-tag">&gt;</span>
+    <span class="hl-comment">&lt;!-- Title shown in browser tab --&gt;</span>
+    <span class="hl-tag">&lt;title&gt;</span><span class="hl-text">My Page</span><span class="hl-tag">&lt;/title&gt;</span>
+  <span class="hl-tag">&lt;/head&gt;</span>
+
+  <span class="hl-tag">&lt;body&gt;</span>
+    <span class="hl-comment">&lt;!-- Everything visible goes here --&gt;</span>
+    <span class="hl-tag">&lt;h1&gt;</span><span class="hl-text">Hello, World!</span><span class="hl-tag">&lt;/h1&gt;</span>
+  <span class="hl-tag">&lt;/body&gt;</span>
+
+<span class="hl-tag">&lt;/html&gt;</span></code></pre>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>🧠 Head vs Body</h2>
+            <table class="tag-table">
+              <thead>
+                <tr>
+                  <th>Section</th>
+                  <th>Contains</th>
+                  <th>Visible?</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="tag-pill">&lt;head&gt;</span></td>
+                  <td style="color: #e2e8f0">
+                    Metadata, title, CSS links, scripts
+                  </td>
+                  <td style="color: #f87171">No</td>
+                </tr>
+                <tr>
+                  <td><span class="tag-pill">&lt;body&gt;</span></td>
+                  <td style="color: #e2e8f0">All visible content</td>
+                  <td style="color: #4ade80">Yes</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="tip-box">
+              ✅ Always include <code>&lt;!DOCTYPE html&gt;</code> as the very
+              first line — it enables Standards Mode in all browsers.
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>⚡ Try It Live</h2>
+            <div class="editor-wrap">
+              <div class="editor-panel">
+                <textarea class="html-input" id="ed-1" spellcheck="false">
+&lt;h1&gt;My First Page&lt;/h1&gt;
+&lt;p&gt;This is the &lt;strong&gt;body&lt;/strong&gt; of the document.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;The &lt;em&gt;head&lt;/em&gt; section is invisible.&lt;/p&gt;</textarea
+                >
+                <iframe class="preview-frame" id="pv-1"></iframe>
+              </div>
+              <button class="run-btn" onclick="runPreview('ed-1', 'pv-1')">
+                ▶ Run
+              </button>
+            </div>
+          </div>
+
+          <div class="lesson-nav">
+            <button class="nav-arrow" onclick="goLesson(-1)">← Previous</button>
+            <div class="lesson-dots" id="dots-1"></div>
+            <button class="nav-arrow" onclick="goLesson(1)">Next →</button>
+          </div>
+        </article>
+
+        <!-- ────────── LESSON 2: Text & Headings ────────── -->
+        <article class="lesson" id="lesson-2">
+          <div class="lesson-header">
+            <div class="lesson-badge">✏️ Lesson 3 of 8</div>
+            <h1>Text &amp; Headings</h1>
+            <p>
+              HTML gives you rich tools for structuring text — from headings and
+              paragraphs to bold, italic, and more.
+            </p>
+          </div>
+
+          <div class="card">
+            <h2>📰 Headings h1–h6</h2>
+            <p>
+              HTML has six heading levels. Use them in order — they communicate
+              hierarchy, not just size.
+            </p>
+            <div class="code-block">
+              <div class="code-header">
+                <span class="code-lang">html</span
+                ><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              </div>
+              <pre><code><span class="hl-tag">&lt;h1&gt;</span><span class="hl-text">Page Title (use once)</span><span class="hl-tag">&lt;/h1&gt;</span>
+<span class="hl-tag">&lt;h2&gt;</span><span class="hl-text">Section Heading</span><span class="hl-tag">&lt;/h2&gt;</span>
+<span class="hl-tag">&lt;h3&gt;</span><span class="hl-text">Sub-section</span><span class="hl-tag">&lt;/h3&gt;</span>
+<span class="hl-tag">&lt;h4&gt;</span><span class="hl-text">Sub-sub-section</span><span class="hl-tag">&lt;/h4&gt;</span>
+<span class="hl-tag">&lt;h5&gt;</span><span class="hl-text">Minor heading</span><span class="hl-tag">&lt;/h5&gt;</span>
+<span class="hl-tag">&lt;h6&gt;</span><span class="hl-text">Smallest heading</span><span class="hl-tag">&lt;/h6&gt;</span></code></pre>
+            </div>
+            <div class="warn-box">
+              ⚠️ Only use <code>&lt;h1&gt;</code> once per page. Skipping levels
+              (e.g. h1 → h3) hurts accessibility.
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>📝 Text Formatting Tags</h2>
+            <table class="tag-table">
+              <thead>
+                <tr>
+                  <th>Tag</th>
+                  <th>Result</th>
+                  <th>Semantic meaning</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="tag-pill">&lt;strong&gt;</span></td>
+                  <td style="color: #e2e8f0"><strong>Bold</strong></td>
+                  <td style="color: #94a3b8">Important content</td>
+                </tr>
+                <tr>
+                  <td><span class="tag-pill">&lt;em&gt;</span></td>
+                  <td style="color: #e2e8f0"><em>Italic</em></td>
+                  <td style="color: #94a3b8">Emphasized content</td>
+                </tr>
+                <tr>
+                  <td><span class="tag-pill">&lt;mark&gt;</span></td>
+                  <td style="color: #e2e8f0"><mark>Highlighted</mark></td>
+                  <td style="color: #94a3b8">Relevant/highlighted</td>
+                </tr>
+                <tr>
+                  <td><span class="tag-pill">&lt;code&gt;</span></td>
+                  <td style="color: #e2e8f0">
+                    <code
+                      style="
+                        background: #0f172a;
+                        padding: 2px 6px;
+                        border-radius: 4px;
+                      "
+                      >code</code
+                    >
+                  </td>
+                  <td style="color: #94a3b8">Inline code</td>
+                </tr>
+                <tr>
+                  <td><span class="tag-pill">&lt;del&gt;</span></td>
+                  <td style="color: #e2e8f0"><del>Deleted</del></td>
+                  <td style="color: #94a3b8">Removed content</td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class="tag-pill">&lt;sup&gt; / &lt;sub&gt;</span>
+                  </td>
+                  <td style="color: #e2e8f0">X<sup>2</sup> / H<sub>2</sub>O</td>
+                  <td style="color: #94a3b8">Superscript/subscript</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card">
+            <h2>⚡ Try It Live</h2>
+            <div class="editor-wrap">
+              <div class="editor-panel">
+                <textarea class="html-input" id="ed-2" spellcheck="false">
+&lt;h1&gt;Recipe: Pancakes&lt;/h1&gt;
+&lt;h2&gt;Ingredients&lt;/h2&gt;
+&lt;p&gt;You need &lt;strong&gt;2 eggs&lt;/strong&gt; and &lt;em&gt;fresh milk&lt;/em&gt;.&lt;/p&gt;
+&lt;h2&gt;Notes&lt;/h2&gt;
+&lt;p&gt;&lt;mark&gt;Tip:&lt;/mark&gt; Cook on &lt;del&gt;high&lt;/del&gt; medium heat.&lt;/p&gt;</textarea
+                >
+                <iframe class="preview-frame" id="pv-2"></iframe>
+              </div>
+              <button class="run-btn" onclick="runPreview('ed-2', 'pv-2')">
+                ▶ Run
+              </button>
+            </div>
+          </div>
+
+          <div class="lesson-nav">
+            <button class="nav-arrow" onclick="goLesson(-1)">← Previous</button>
+            <div class="lesson-dots"></div>
+            <button class="nav-arrow" onclick="goLesson(1)">Next →</button>
+          </div>
+        </article>
+
+        <!-- ────────── LESSON 3: Links & Images ────────── -->
+        <article class="lesson" id="lesson-3">
+          <div class="lesson-header">
+            <div class="lesson-badge">🔗 Lesson 4 of 8</div>
+            <h1>Links &amp; Images</h1>
+            <p>
+              Links connect the web together. Images make it visual. These two
+              tags are used on virtually every page.
+            </p>
+          </div>
+
+          <div class="card">
+            <h2>
+              🔗 The Anchor Tag <code style="font-size: 0.9rem">&lt;a&gt;</code>
+            </h2>
+            <div class="code-block">
+              <div class="code-header">
+                <span class="code-lang">html</span
+                ><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              </div>
+              <pre><code><span class="hl-comment">&lt;!-- External link (opens in new tab) --&gt;</span>
+<span class="hl-tag">&lt;a </span><span class="hl-attr">href</span><span class="hl-text">=</span><span class="hl-val">"https://example.com"</span><span class="hl-attr"> target</span><span class="hl-text">=</span><span class="hl-val">"_blank"</span><span class="hl-attr"> rel</span><span class="hl-text">=</span><span class="hl-val">"noopener"</span><span class="hl-tag">&gt;</span>
+  <span class="hl-text">Visit Example</span>
+<span class="hl-tag">&lt;/a&gt;</span>
+
+<span class="hl-comment">&lt;!-- Internal link to another page --&gt;</span>
+<span class="hl-tag">&lt;a </span><span class="hl-attr">href</span><span class="hl-text">=</span><span class="hl-val">"about.html"</span><span class="hl-tag">&gt;</span><span class="hl-text">About Us</span><span class="hl-tag">&lt;/a&gt;</span>
+
+<span class="hl-comment">&lt;!-- Link to a section on the same page --&gt;</span>
+<span class="hl-tag">&lt;a </span><span class="hl-attr">href</span><span class="hl-text">=</span><span class="hl-val">"#section-id"</span><span class="hl-tag">&gt;</span><span class="hl-text">Jump to Section</span><span class="hl-tag">&lt;/a&gt;</span>
+
+<span class="hl-comment">&lt;!-- Email link --&gt;</span>
+<span class="hl-tag">&lt;a </span><span class="hl-attr">href</span><span class="hl-text">=</span><span class="hl-val">"mailto:hello@example.com"</span><span class="hl-tag">&gt;</span><span class="hl-text">Email Me</span><span class="hl-tag">&lt;/a&gt;</span></code></pre>
+            </div>
+            <div class="tip-box">
+              ✅ Always add <code>rel="noopener noreferrer"</code> with
+              <code>target="_blank"</code> to prevent security issues.
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>
+              🖼️ The Image Tag
+              <code style="font-size: 0.9rem">&lt;img&gt;</code>
+            </h2>
+            <div class="code-block">
+              <div class="code-header">
+                <span class="code-lang">html</span
+                ><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              </div>
+              <pre><code><span class="hl-comment">&lt;!-- The alt attribute is REQUIRED for accessibility --&gt;</span>
+<span class="hl-tag">&lt;img </span>
+  <span class="hl-attr">src</span><span class="hl-text">=</span><span class="hl-val">"dog.jpg"</span>
+  <span class="hl-attr">alt</span><span class="hl-text">=</span><span class="hl-val">"A golden retriever on a sunny beach"</span>
+  <span class="hl-attr">width</span><span class="hl-text">=</span><span class="hl-val">"400"</span>
+  <span class="hl-attr">height</span><span class="hl-text">=</span><span class="hl-val">"300"</span>
+<span class="hl-tag">&gt;</span>
+
+<span class="hl-comment">&lt;!-- Use a URL for remote images --&gt;</span>
+<span class="hl-tag">&lt;img </span><span class="hl-attr">src</span><span class="hl-text">=</span><span class="hl-val">"https://placekitten.com/200/150"</span><span class="hl-attr"> alt</span><span class="hl-text">=</span><span class="hl-val">"A kitten"</span><span class="hl-tag">&gt;</span></code></pre>
+            </div>
+            <div class="warn-box">
+              ⚠️ Never leave <code>alt</code> empty unless the image is purely
+              decorative (<code>alt=""</code>). Screen readers depend on it.
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>⚡ Try It Live</h2>
+            <div class="editor-wrap">
+              <div class="editor-panel">
+                <textarea class="html-input" id="ed-3" spellcheck="false">
+&lt;h2&gt;My Favourite Sites&lt;/h2&gt;
+&lt;p&gt;&lt;a href="https://developer.mozilla.org" target="_blank" rel="noopener"&gt;MDN Web Docs&lt;/a&gt; is a great HTML reference.&lt;/p&gt;
+&lt;img src="https://picsum.photos/300/150" alt="Random scenic photo"&gt;</textarea
+                >
+                <iframe class="preview-frame" id="pv-3"></iframe>
+              </div>
+              <button class="run-btn" onclick="runPreview('ed-3', 'pv-3')">
+                ▶ Run
+              </button>
+            </div>
+          </div>
+
+          <div class="lesson-nav">
+            <button class="nav-arrow" onclick="goLesson(-1)">← Previous</button>
+            <div class="lesson-dots"></div>
+            <button class="nav-arrow" onclick="goLesson(1)">Next →</button>
+          </div>
+        </article>
+
+        <!-- ────────── LESSON 4: Lists & Tables ────────── -->
+        <article class="lesson" id="lesson-4">
+          <div class="lesson-header">
+            <div class="lesson-badge">📋 Lesson 5 of 8</div>
+            <h1>Lists &amp; Tables</h1>
+            <p>
+              Lists organize items. Tables display structured data. Both are
+              everyday HTML essentials.
+            </p>
+          </div>
+
+          <div class="card">
+            <h2>📌 Three Types of Lists</h2>
+            <div class="code-block">
+              <div class="code-header">
+                <span class="code-lang">html</span
+                ><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              </div>
+              <pre><code><span class="hl-comment">&lt;!-- Unordered (bullet) list --&gt;</span>
+<span class="hl-tag">&lt;ul&gt;</span>
+  <span class="hl-tag">&lt;li&gt;</span><span class="hl-text">Apples</span><span class="hl-tag">&lt;/li&gt;</span>
+  <span class="hl-tag">&lt;li&gt;</span><span class="hl-text">Bananas</span><span class="hl-tag">&lt;/li&gt;</span>
+<span class="hl-tag">&lt;/ul&gt;</span>
+
+<span class="hl-comment">&lt;!-- Ordered (numbered) list --&gt;</span>
+<span class="hl-tag">&lt;ol&gt;</span>
+  <span class="hl-tag">&lt;li&gt;</span><span class="hl-text">First step</span><span class="hl-tag">&lt;/li&gt;</span>
+  <span class="hl-tag">&lt;li&gt;</span><span class="hl-text">Second step</span><span class="hl-tag">&lt;/li&gt;</span>
+<span class="hl-tag">&lt;/ol&gt;</span>
+
+<span class="hl-comment">&lt;!-- Description list (term + definition) --&gt;</span>
+<span class="hl-tag">&lt;dl&gt;</span>
+  <span class="hl-tag">&lt;dt&gt;</span><span class="hl-text">HTML</span><span class="hl-tag">&lt;/dt&gt;</span>
+  <span class="hl-tag">&lt;dd&gt;</span><span class="hl-text">HyperText Markup Language</span><span class="hl-tag">&lt;/dd&gt;</span>
+<span class="hl-tag">&lt;/dl&gt;</span></code></pre>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>📊 Tables</h2>
+            <div class="code-block">
+              <div class="code-header">
+                <span class="code-lang">html</span
+                ><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              </div>
+              <pre><code><span class="hl-tag">&lt;table&gt;</span>
+  <span class="hl-tag">&lt;thead&gt;</span>
+    <span class="hl-tag">&lt;tr&gt;</span>
+      <span class="hl-tag">&lt;th&gt;</span><span class="hl-text">Name</span><span class="hl-tag">&lt;/th&gt;</span>  <span class="hl-tag">&lt;th&gt;</span><span class="hl-text">Score</span><span class="hl-tag">&lt;/th&gt;</span>
+    <span class="hl-tag">&lt;/tr&gt;</span>
+  <span class="hl-tag">&lt;/thead&gt;</span>
+  <span class="hl-tag">&lt;tbody&gt;</span>
+    <span class="hl-tag">&lt;tr&gt;</span>
+      <span class="hl-tag">&lt;td&gt;</span><span class="hl-text">Alice</span><span class="hl-tag">&lt;/td&gt;</span>  <span class="hl-tag">&lt;td&gt;</span><span class="hl-text">95</span><span class="hl-tag">&lt;/td&gt;</span>
+    <span class="hl-tag">&lt;/tr&gt;</span>
+    <span class="hl-tag">&lt;tr&gt;</span>
+      <span class="hl-tag">&lt;td&gt;</span><span class="hl-text">Bob</span><span class="hl-tag">&lt;/td&gt;</span>    <span class="hl-tag">&lt;td&gt;</span><span class="hl-text">87</span><span class="hl-tag">&lt;/td&gt;</span>
+    <span class="hl-tag">&lt;/tr&gt;</span>
+  <span class="hl-tag">&lt;/tbody&gt;</span>
+<span class="hl-tag">&lt;/table&gt;</span></code></pre>
+            </div>
+            <div class="info-box">
+              💡 Tables are for <strong>data</strong>, not layout. Never use a
+              table to arrange your page's visual structure.
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>⚡ Try It Live</h2>
+            <div class="editor-wrap">
+              <div class="editor-panel">
+                <textarea class="html-input" id="ed-4" spellcheck="false">
+&lt;h2&gt;Top 3 Languages&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;HTML&lt;/li&gt;
+  &lt;li&gt;CSS&lt;/li&gt;
+  &lt;li&gt;JavaScript&lt;/li&gt;
+&lt;/ol&gt;
+&lt;table border="1" cellpadding="6"&gt;
+  &lt;tr&gt;&lt;th&gt;Tag&lt;/th&gt;&lt;th&gt;Purpose&lt;/th&gt;&lt;/tr&gt;
+  &lt;tr&gt;&lt;td&gt;ul&lt;/td&gt;&lt;td&gt;Bullet list&lt;/td&gt;&lt;/tr&gt;
+  &lt;tr&gt;&lt;td&gt;ol&lt;/td&gt;&lt;td&gt;Numbered list&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;</textarea
+                >
+                <iframe class="preview-frame" id="pv-4"></iframe>
+              </div>
+              <button class="run-btn" onclick="runPreview('ed-4', 'pv-4')">
+                ▶ Run
+              </button>
+            </div>
+          </div>
+
+          <div class="lesson-nav">
+            <button class="nav-arrow" onclick="goLesson(-1)">← Previous</button>
+            <div class="lesson-dots"></div>
+            <button class="nav-arrow" onclick="goLesson(1)">Next →</button>
+          </div>
+        </article>
+
+        <!-- ────────── LESSON 5: Forms ────────── -->
+        <article class="lesson" id="lesson-5">
+          <div class="lesson-header">
+            <div class="lesson-badge">📝 Lesson 6 of 8</div>
+            <h1>Forms &amp; Inputs</h1>
+            <p>
+              Forms are how users interact with websites — logins, search bars,
+              contact pages, checkouts. Mastering forms is essential.
+            </p>
+          </div>
+
+          <div class="card">
+            <h2>🧰 Essential Form Elements</h2>
+            <div class="code-block">
+              <div class="code-header">
+                <span class="code-lang">html</span
+                ><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              </div>
+              <pre><code><span class="hl-tag">&lt;form </span><span class="hl-attr">action</span><span class="hl-text">=</span><span class="hl-val">"/submit"</span><span class="hl-attr"> method</span><span class="hl-text">=</span><span class="hl-val">"post"</span><span class="hl-tag">&gt;</span>
+
+  <span class="hl-comment">&lt;!-- Label + input pair (always link them!) --&gt;</span>
+  <span class="hl-tag">&lt;label </span><span class="hl-attr">for</span><span class="hl-text">=</span><span class="hl-val">"name"</span><span class="hl-tag">&gt;</span><span class="hl-text">Full Name</span><span class="hl-tag">&lt;/label&gt;</span>
+  <span class="hl-tag">&lt;input </span><span class="hl-attr">type</span><span class="hl-text">=</span><span class="hl-val">"text"</span><span class="hl-attr"> id</span><span class="hl-text">=</span><span class="hl-val">"name"</span><span class="hl-attr"> name</span><span class="hl-text">=</span><span class="hl-val">"name"</span><span class="hl-attr"> placeholder</span><span class="hl-text">=</span><span class="hl-val">"Alice Smith"</span><span class="hl-attr"> required</span><span class="hl-tag">&gt;</span>
+
+  <span class="hl-tag">&lt;label </span><span class="hl-attr">for</span><span class="hl-text">=</span><span class="hl-val">"email"</span><span class="hl-tag">&gt;</span><span class="hl-text">Email</span><span class="hl-tag">&lt;/label&gt;</span>
+  <span class="hl-tag">&lt;input </span><span class="hl-attr">type</span><span class="hl-text">=</span><span class="hl-val">"email"</span><span class="hl-attr"> id</span><span class="hl-text">=</span><span class="hl-val">"email"</span><span class="hl-attr"> name</span><span class="hl-text">=</span><span class="hl-val">"email"</span><span class="hl-attr"> required</span><span class="hl-tag">&gt;</span>
+
+  <span class="hl-comment">&lt;!-- Dropdown --&gt;</span>
+  <span class="hl-tag">&lt;label </span><span class="hl-attr">for</span><span class="hl-text">=</span><span class="hl-val">"role"</span><span class="hl-tag">&gt;</span><span class="hl-text">Role</span><span class="hl-tag">&lt;/label&gt;</span>
+  <span class="hl-tag">&lt;select </span><span class="hl-attr">id</span><span class="hl-text">=</span><span class="hl-val">"role"</span><span class="hl-attr"> name</span><span class="hl-text">=</span><span class="hl-val">"role"</span><span class="hl-tag">&gt;</span>
+    <span class="hl-tag">&lt;option </span><span class="hl-attr">value</span><span class="hl-text">=</span><span class="hl-val">"student"</span><span class="hl-tag">&gt;</span><span class="hl-text">Student</span><span class="hl-tag">&lt;/option&gt;</span>
+    <span class="hl-tag">&lt;option </span><span class="hl-attr">value</span><span class="hl-text">=</span><span class="hl-val">"dev"</span><span class="hl-tag">&gt;</span><span class="hl-text">Developer</span><span class="hl-tag">&lt;/option&gt;</span>
+  <span class="hl-tag">&lt;/select&gt;</span>
+
+  <span class="hl-comment">&lt;!-- Multiline text --&gt;</span>
+  <span class="hl-tag">&lt;label </span><span class="hl-attr">for</span><span class="hl-text">=</span><span class="hl-val">"msg"</span><span class="hl-tag">&gt;</span><span class="hl-text">Message</span><span class="hl-tag">&lt;/label&gt;</span>
+  <span class="hl-tag">&lt;textarea </span><span class="hl-attr">id</span><span class="hl-text">=</span><span class="hl-val">"msg"</span><span class="hl-attr"> name</span><span class="hl-text">=</span><span class="hl-val">"msg"</span><span class="hl-attr"> rows</span><span class="hl-text">=</span><span class="hl-val">"4"</span><span class="hl-tag">&gt;&lt;/textarea&gt;</span>
+
+  <span class="hl-tag">&lt;button </span><span class="hl-attr">type</span><span class="hl-text">=</span><span class="hl-val">"submit"</span><span class="hl-tag">&gt;</span><span class="hl-text">Send</span><span class="hl-tag">&lt;/button&gt;</span>
+
+<span class="hl-tag">&lt;/form&gt;</span></code></pre>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>🎛️ Input Types Reference</h2>
+            <div class="cheat-grid">
+              <div class="cheat-item">
+                <code>type="text"</code><span>Plain text field</span>
+              </div>
+              <div class="cheat-item">
+                <code>type="email"</code><span>Email validation</span>
+              </div>
+              <div class="cheat-item">
+                <code>type="password"</code><span>Hidden characters</span>
+              </div>
+              <div class="cheat-item">
+                <code>type="number"</code><span>Numeric input</span>
+              </div>
+              <div class="cheat-item">
+                <code>type="checkbox"</code><span>Tick box</span>
+              </div>
+              <div class="cheat-item">
+                <code>type="radio"</code><span>Single choice</span>
+              </div>
+              <div class="cheat-item">
+                <code>type="date"</code><span>Date picker</span>
+              </div>
+              <div class="cheat-item">
+                <code>type="range"</code><span>Slider</span>
+              </div>
+              <div class="cheat-item">
+                <code>type="file"</code><span>File upload</span>
+              </div>
+              <div class="cheat-item">
+                <code>type="color"</code><span>Colour picker</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>⚡ Try It Live</h2>
+            <div class="editor-wrap">
+              <div class="editor-panel">
+                <textarea class="html-input" id="ed-5" spellcheck="false">
+&lt;form&gt;
+  &lt;label for="n"&gt;Name:&lt;/label&gt;&lt;br&gt;
+  &lt;input type="text" id="n" placeholder="Your name" required&gt;&lt;br&gt;&lt;br&gt;
+  &lt;label for="c"&gt;Favourite colour:&lt;/label&gt;
+  &lt;input type="color" id="c" value="#6366f1"&gt;&lt;br&gt;&lt;br&gt;
+  &lt;label&gt;&lt;input type="checkbox"&gt; I enjoy learning HTML&lt;/label&gt;&lt;br&gt;&lt;br&gt;
+  &lt;button type="submit"&gt;Submit&lt;/button&gt;
+&lt;/form&gt;</textarea
+                >
+                <iframe class="preview-frame" id="pv-5"></iframe>
+              </div>
+              <button class="run-btn" onclick="runPreview('ed-5', 'pv-5')">
+                ▶ Run
+              </button>
+            </div>
+          </div>
+
+          <div class="lesson-nav">
+            <button class="nav-arrow" onclick="goLesson(-1)">← Previous</button>
+            <div class="lesson-dots"></div>
+            <button class="nav-arrow" onclick="goLesson(1)">Next →</button>
+          </div>
+        </article>
+
+        <!-- ────────── LESSON 6: Semantic HTML5 ────────── -->
+        <article class="lesson" id="lesson-6">
+          <div class="lesson-header">
+            <div class="lesson-badge">🧱 Lesson 7 of 8</div>
+            <h1>Semantic HTML5</h1>
+            <p>
+              Semantic tags give meaning to your content — helping browsers,
+              search engines, and screen readers understand the page structure.
+            </p>
+          </div>
+
+          <div class="card">
+            <h2>🏛️ Page Structure Tags</h2>
+            <div class="code-block">
+              <div class="code-header">
+                <span class="code-lang">html</span
+                ><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              </div>
+              <pre><code><span class="hl-tag">&lt;header&gt;</span>
+  <span class="hl-tag">&lt;nav&gt;</span><span class="hl-text">Site navigation links</span><span class="hl-tag">&lt;/nav&gt;</span>
+<span class="hl-tag">&lt;/header&gt;</span>
+
+<span class="hl-tag">&lt;main&gt;</span>
+  <span class="hl-tag">&lt;article&gt;</span>
+    <span class="hl-tag">&lt;h2&gt;</span><span class="hl-text">Blog Post Title</span><span class="hl-tag">&lt;/h2&gt;</span>
+    <span class="hl-tag">&lt;section&gt;</span><span class="hl-text">Introduction section...</span><span class="hl-tag">&lt;/section&gt;</span>
+    <span class="hl-tag">&lt;section&gt;</span><span class="hl-text">Body section...</span><span class="hl-tag">&lt;/section&gt;</span>
+  <span class="hl-tag">&lt;/article&gt;</span>
+
+  <span class="hl-tag">&lt;aside&gt;</span><span class="hl-text">Related links / sidebar</span><span class="hl-tag">&lt;/aside&gt;</span>
+<span class="hl-tag">&lt;/main&gt;</span>
+
+<span class="hl-tag">&lt;footer&gt;</span><span class="hl-text">Copyright &amp; contact info</span><span class="hl-tag">&lt;/footer&gt;</span></code></pre>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>📖 Semantic vs Non-Semantic</h2>
+            <table class="tag-table">
+              <thead>
+                <tr>
+                  <th>Avoid</th>
+                  <th>Use Instead</th>
+                  <th>Why</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="tag-pill">&lt;div id="header"&gt;</span></td>
+                  <td><span class="tag-pill">&lt;header&gt;</span></td>
+                  <td style="color: #94a3b8">Communicates role</td>
+                </tr>
+                <tr>
+                  <td><span class="tag-pill">&lt;div id="nav"&gt;</span></td>
+                  <td><span class="tag-pill">&lt;nav&gt;</span></td>
+                  <td style="color: #94a3b8">Screen readers use it</td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class="tag-pill">&lt;div id="content"&gt;</span>
+                  </td>
+                  <td><span class="tag-pill">&lt;main&gt;</span></td>
+                  <td style="color: #94a3b8">Only one per page</td>
+                </tr>
+                <tr>
+                  <td><span class="tag-pill">&lt;b&gt;</span></td>
+                  <td><span class="tag-pill">&lt;strong&gt;</span></td>
+                  <td style="color: #94a3b8">Semantic importance</td>
+                </tr>
+                <tr>
+                  <td><span class="tag-pill">&lt;i&gt;</span></td>
+                  <td><span class="tag-pill">&lt;em&gt;</span></td>
+                  <td style="color: #94a3b8">Semantic emphasis</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="tip-box">
+              ✅ Semantic HTML improves SEO, accessibility (WCAG), and code
+              readability — use it by default.
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>⚡ Try It Live</h2>
+            <div class="editor-wrap">
+              <div class="editor-panel">
+                <textarea class="html-input" id="ed-6" spellcheck="false">
+&lt;header&gt;
+  &lt;h1&gt;My Blog&lt;/h1&gt;
+  &lt;nav&gt;&lt;a href="#"&gt;Home&lt;/a&gt; | &lt;a href="#"&gt;About&lt;/a&gt;&lt;/nav&gt;
+&lt;/header&gt;
+&lt;main&gt;
+  &lt;article&gt;
+    &lt;h2&gt;Hello World Post&lt;/h2&gt;
+    &lt;p&gt;This is a &lt;strong&gt;semantic&lt;/strong&gt; HTML5 page.&lt;/p&gt;
+  &lt;/article&gt;
+&lt;/main&gt;
+&lt;footer&gt;&lt;p&gt;© 2026 My Blog&lt;/p&gt;&lt;/footer&gt;</textarea
+                >
+                <iframe class="preview-frame" id="pv-6"></iframe>
+              </div>
+              <button class="run-btn" onclick="runPreview('ed-6', 'pv-6')">
+                ▶ Run
+              </button>
+            </div>
+          </div>
+
+          <div class="lesson-nav">
+            <button class="nav-arrow" onclick="goLesson(-1)">← Previous</button>
+            <div class="lesson-dots"></div>
+            <button class="nav-arrow" onclick="goLesson(1)">Next →</button>
+          </div>
+        </article>
+
+        <!-- ────────── LESSON 7: Cheatsheet & Quiz ────────── -->
+        <article class="lesson" id="lesson-7">
+          <div class="lesson-header">
+            <div class="lesson-badge">🎓 Lesson 8 of 8</div>
+            <h1>Cheatsheet &amp; Quiz</h1>
+            <p>
+              You've covered all the core HTML concepts. Test your knowledge and
+              keep the cheatsheet handy.
+            </p>
+          </div>
+
+          <!-- Cheatsheet -->
+          <div class="card">
+            <h2>📋 HTML Quick Reference</h2>
+            <div class="cheat-grid">
+              <div class="cheat-item">
+                <code>&lt;h1&gt;–&lt;h6&gt;</code><span>Headings</span>
+              </div>
+              <div class="cheat-item">
+                <code>&lt;p&gt;</code><span>Paragraph</span>
+              </div>
+              <div class="cheat-item">
+                <code>&lt;a href=""&gt;</code><span>Link</span>
+              </div>
+              <div class="cheat-item">
+                <code>&lt;img src="" alt=""&gt;</code><span>Image</span>
+              </div>
+              <div class="cheat-item">
+                <code>&lt;ul&gt; / &lt;ol&gt;</code><span>Lists</span>
+              </div>
+              <div class="cheat-item">
+                <code>&lt;li&gt;</code><span>List item</span>
+              </div>
+              <div class="cheat-item">
+                <code>&lt;table&gt;</code><span>Table</span>
+              </div>
+              <div class="cheat-item">
+                <code>&lt;form&gt;</code><span>Form</span>
+              </div>
+              <div class="cheat-item">
+                <code>&lt;input&gt;</code><span>Input field</span>
+              </div>
+              <div class="cheat-item">
+                <code>&lt;button&gt;</code><span>Button</span>
+              </div>
+              <div class="cheat-item">
+                <code>&lt;div&gt;</code><span>Generic block</span>
+              </div>
+              <div class="cheat-item">
+                <code>&lt;span&gt;</code><span>Generic inline</span>
+              </div>
+              <div class="cheat-item">
+                <code>&lt;strong&gt;</code><span>Bold / important</span>
+              </div>
+              <div class="cheat-item">
+                <code>&lt;em&gt;</code><span>Italic / emphasis</span>
+              </div>
+              <div class="cheat-item">
+                <code>&lt;header&gt;</code><span>Page header</span>
+              </div>
+              <div class="cheat-item">
+                <code>&lt;main&gt;</code><span>Main content</span>
+              </div>
+              <div class="cheat-item">
+                <code>&lt;footer&gt;</code><span>Page footer</span>
+              </div>
+              <div class="cheat-item">
+                <code>&lt;nav&gt;</code><span>Navigation</span>
+              </div>
+              <div class="cheat-item">
+                <code>&lt;article&gt;</code><span>Self-contained content</span>
+              </div>
+              <div class="cheat-item">
+                <code>&lt;section&gt;</code><span>Thematic group</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quiz -->
+          <div class="card">
+            <h2>🧠 Knowledge Check</h2>
+
+            <div class="quiz-card">
+              <h3>Q1. Which tag defines the largest heading?</h3>
+              <div class="quiz-options">
+                <button class="quiz-opt" onclick="answer(this, false)">
+                  A) &lt;h6&gt;
+                </button>
+                <button class="quiz-opt" onclick="answer(this, true)">
+                  B) &lt;h1&gt;
+                </button>
+                <button class="quiz-opt" onclick="answer(this, false)">
+                  C) &lt;heading&gt;
+                </button>
+                <button class="quiz-opt" onclick="answer(this, false)">
+                  D) &lt;big&gt;
+                </button>
+              </div>
+              <div class="quiz-feedback"></div>
+            </div>
+
+            <div class="quiz-card">
+              <h3>
+                Q2. Which attribute makes a link open in a new browser tab?
+              </h3>
+              <div class="quiz-options">
+                <button class="quiz-opt" onclick="answer(this, false)">
+                  A) rel="_blank"
+                </button>
+                <button class="quiz-opt" onclick="answer(this, false)">
+                  B) href="new"
+                </button>
+                <button class="quiz-opt" onclick="answer(this, true)">
+                  C) target="_blank"
+                </button>
+                <button class="quiz-opt" onclick="answer(this, false)">
+                  D) open="tab"
+                </button>
+              </div>
+              <div class="quiz-feedback"></div>
+            </div>
+
+            <div class="quiz-card">
+              <h3>Q3. Which tag is used for a multiline text input?</h3>
+              <div class="quiz-options">
+                <button class="quiz-opt" onclick="answer(this, false)">
+                  A) &lt;input type="multiline"&gt;
+                </button>
+                <button class="quiz-opt" onclick="answer(this, false)">
+                  B) &lt;input type="text"&gt;
+                </button>
+                <button class="quiz-opt" onclick="answer(this, true)">
+                  C) &lt;textarea&gt;
+                </button>
+                <button class="quiz-opt" onclick="answer(this, false)">
+                  D) &lt;multi&gt;
+                </button>
+              </div>
+              <div class="quiz-feedback"></div>
+            </div>
+
+            <div class="quiz-card">
+              <h3>
+                Q4. What does the <code>alt</code> attribute on &lt;img&gt; do?
+              </h3>
+              <div class="quiz-options">
+                <button class="quiz-opt" onclick="answer(this, false)">
+                  A) Sets the image size
+                </button>
+                <button class="quiz-opt" onclick="answer(this, true)">
+                  B) Provides alternative text for accessibility
+                </button>
+                <button class="quiz-opt" onclick="answer(this, false)">
+                  C) Links to an alternate image
+                </button>
+                <button class="quiz-opt" onclick="answer(this, false)">
+                  D) Adds a tooltip
+                </button>
+              </div>
+              <div class="quiz-feedback"></div>
+            </div>
+
+            <div class="quiz-card">
+              <h3>Q5. Which is a semantic HTML5 tag?</h3>
+              <div class="quiz-options">
+                <button class="quiz-opt" onclick="answer(this, false)">
+                  A) &lt;div&gt;
+                </button>
+                <button class="quiz-opt" onclick="answer(this, false)">
+                  B) &lt;span&gt;
+                </button>
+                <button class="quiz-opt" onclick="answer(this, true)">
+                  C) &lt;article&gt;
+                </button>
+                <button class="quiz-opt" onclick="answer(this, false)">
+                  D) &lt;block&gt;
+                </button>
+              </div>
+              <div class="quiz-feedback"></div>
+            </div>
+
+            <div
+              id="quiz-score"
+              style="
+                margin-top: 16px;
+                font-size: 1rem;
+                font-weight: 600;
+                color: #a5b4fc;
+                display: none;
+              "
+            ></div>
+          </div>
+
+          <div class="card" style="text-align: center; padding: 32px">
+            <div style="font-size: 3rem; margin-bottom: 12px">🎉</div>
+            <h2 style="font-size: 1.4rem; justify-content: center">
+              Course Complete!
+            </h2>
+            <p style="margin-top: 8px; color: #94a3b8">
+              You've learned the core of HTML. Next steps: explore CSS for
+              styling and JavaScript for interactivity.
+            </p>
+            <div
+              style="
+                margin-top: 20px;
+                display: flex;
+                gap: 12px;
+                justify-content: center;
+                flex-wrap: wrap;
+              "
+            >
+              <a
+                href="https://developer.mozilla.org/en-US/docs/Web/HTML"
+                target="_blank"
+                rel="noopener noreferrer"
+                style="
+                  background: #6366f1;
+                  color: #fff;
+                  padding: 10px 20px;
+                  border-radius: 8px;
+                  text-decoration: none;
+                  font-weight: 600;
+                  font-size: 0.875rem;
+                "
+              >
+                MDN Reference →
+              </a>
+              <a
+                href="https://validator.w3.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style="
+                  background: #1e293b;
+                  color: #94a3b8;
+                  border: 1px solid #334155;
+                  padding: 10px 20px;
+                  border-radius: 8px;
+                  text-decoration: none;
+                  font-weight: 600;
+                  font-size: 0.875rem;
+                "
+              >
+                HTML Validator →
+              </a>
+            </div>
+          </div>
+
+          <div class="lesson-nav">
+            <button class="nav-arrow" onclick="goLesson(-1)">← Previous</button>
+            <div class="lesson-dots"></div>
+            <button class="nav-arrow" disabled>Next →</button>
+          </div>
+        </article>
+      </main>
+    </div>
+
+    <script>
+      const TOTAL = 8;
+      let current = 0;
+      const done = new Set();
+
+      /* ── Render dots in every lesson-nav ── */
+      function renderDots() {
+        document.querySelectorAll(".lesson-dots").forEach((wrap) => {
+          wrap.innerHTML = "";
+          for (let i = 0; i < TOTAL; i++) {
+            const d = document.createElement("div");
+            d.className =
+              "dot" + (i === current ? " active" : done.has(i) ? " done" : "");
+            wrap.appendChild(d);
+          }
+        });
+      }
+
+      /* ── Progress bar ── */
+      function updateProgress() {
+        const pct = (done.size / TOTAL) * 100;
+        document.getElementById("prog-fill").style.width = pct + "%";
+        document.getElementById("prog-text").textContent =
+          done.size + " / " + TOTAL;
+      }
+
+      /* ── Navigate ── */
+      function goLesson(dir) {
+        done.add(current);
+        document.getElementById("chk-" + current).textContent = "✓";
+        document
+          .querySelector('[data-lesson="' + current + '"]')
+          .classList.add("done");
+
+        const next = current + dir;
+        if (next < 0 || next >= TOTAL) return;
+
+        document.getElementById("lesson-" + current).classList.remove("active");
+        document.getElementById("lesson-" + next).classList.add("active");
+        document
+          .querySelectorAll(".nav-btn")
+          .forEach((b) => b.classList.remove("active"));
+        document
+          .querySelector('[data-lesson="' + next + '"]')
+          .classList.add("active");
+
+        current = next;
+        renderDots();
+        updateProgress();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        runAllPreviews();
+      }
+
+      /* ── Sidebar click ── */
+      document.querySelectorAll(".nav-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const target = parseInt(btn.dataset.lesson);
+          if (target === current) return;
+          done.add(current);
+          document.getElementById("chk-" + current).textContent = "✓";
+          document
+            .querySelector('[data-lesson="' + current + '"]')
+            .classList.add("done");
+          document
+            .getElementById("lesson-" + current)
+            .classList.remove("active");
+          document.getElementById("lesson-" + target).classList.add("active");
+          document
+            .querySelectorAll(".nav-btn")
+            .forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          current = target;
+          renderDots();
+          updateProgress();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          runAllPreviews();
+        });
+      });
+
+      /* ── Live preview ── */
+      function runPreview(edId, frameId) {
+        const html = document.getElementById(edId).value;
+        const frame = document.getElementById(frameId);
+        const safe =
+          '<!DOCTYPE html><html><head><meta charset="UTF-8"><style>body{font-family:system-ui,sans-serif;padding:12px;margin:0;font-size:14px;}a{color:#2563eb;}table{border-collapse:collapse;}th,td{border:1px solid #ccc;padding:6px;}</style></head><body>' +
+          html +
+          "</body></html>";
+        frame.srcdoc = safe;
+      }
+
+      function runAllPreviews() {
+        const pairs = [
+          ["ed-0", "pv-0"],
+          ["ed-1", "pv-1"],
+          ["ed-2", "pv-2"],
+          ["ed-3", "pv-3"],
+          ["ed-4", "pv-4"],
+          ["ed-5", "pv-5"],
+          ["ed-6", "pv-6"],
+        ];
+        pairs.forEach(([e, p]) => {
+          if (document.getElementById(e)) runPreview(e, p);
+        });
+      }
+
+      /* ── Copy code ── */
+      function copyCode(btn) {
+        const pre = btn.closest(".code-block").querySelector("pre");
+        navigator.clipboard.writeText(pre.innerText).then(() => {
+          btn.textContent = "Copied!";
+          btn.classList.add("copied");
+          setTimeout(() => {
+            btn.textContent = "Copy";
+            btn.classList.remove("copied");
+          }, 1800);
+        });
+      }
+
+      /* ── Quiz ── */
+      let answered = 0;
+      let correct = 0;
+      function answer(btn, isCorrect) {
+        const card = btn.closest(".quiz-card");
+        if (card.dataset.answered) return;
+        card.dataset.answered = "1";
+        answered++;
+        const fb = card.querySelector(".quiz-feedback");
+        card.querySelectorAll(".quiz-opt").forEach((b) => (b.disabled = true));
+        if (isCorrect) {
+          btn.classList.add("correct");
+          fb.style.color = "#4ade80";
+          fb.textContent = "✓ Correct!";
+          correct++;
+        } else {
+          btn.classList.add("wrong");
+          fb.style.color = "#fca5a5";
+          fb.textContent =
+            "✗ Not quite. Find the right answer in the lessons above.";
+          card.querySelectorAll(".quiz-opt").forEach((b) => {
+            if (b.onclick.toString().includes("true"))
+              b.classList.add("correct");
+          });
+        }
+        if (answered === 5) {
+          const score = document.getElementById("quiz-score");
+          score.style.display = "block";
+          score.textContent =
+            "🎯 Score: " +
+            correct +
+            " / 5 — " +
+            (correct === 5
+              ? "Perfect! 🏆"
+              : correct >= 3
+                ? "Great job!"
+                : "Keep practising!");
+        }
+      }
+
+      /* ── Init ── */
+      renderDots();
+      runAllPreviews();
+    </script>
+  </body>
+</html>
