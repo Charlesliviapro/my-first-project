@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="A fully semantic HTML5 page demonstrating proper use of semantic elements." />
+    <title>Semantic HTML5 Page</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+
+    <!-- ===== Site Header ===== -->
+    <header>
+      <h1>Semantic HTML5</h1>
+      <p>A structured page using meaningful HTML5 elements</p>
+
+      <nav aria-label="Main navigation">
+        <ul style="list-style:none; display:flex; gap:20px; justify-content:center; margin:16px 0 0; padding:0;">
+          <li><a href="#about">About</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#blog">Blog</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- ===== Main Content ===== -->
+    <main>
+
+      <!-- About Section -->
+      <section id="about" aria-labelledby="about-heading">
+        <h2 id="about-heading">About Us</h2>
+        <p>
+          We craft clean, accessible, and standards-compliant web experiences.
+          Semantic markup helps search engines and assistive technologies
+          understand the structure and purpose of every page.
+        </p>
+      </section>
+
+      <!-- Services Section -->
+      <section id="services" aria-labelledby="services-heading">
+        <h2 id="services-heading">Our Services</h2>
+        <ul>
+          <li>Web Design &amp; Development</li>
+          <li>Search Engine Optimization</li>
+          <li>Accessibility Auditing</li>
+          <li>Performance Optimization</li>
+        </ul>
+      </section>
+
+      <!-- Blog / Articles Section -->
+      <section id="blog" aria-labelledby="blog-heading">
+        <h2 id="blog-heading">Latest Posts</h2>
+
+        <article>
+          <header>
+            <h3>Why Semantic HTML Matters</h3>
+            <p>
+              <time datetime="2026-04-20">April 20, 2026</time>
+              &middot; by <address style="display:inline; font-style:normal;">Jane Doe</address>
+            </p>
+          </header>
+          <p>
+            Using the right element for the right job improves readability,
+            accessibility, and SEO — all at once.
+          </p>
+          <footer>
+            <a href="#">Read more &rarr;</a>
+          </footer>
+        </article>
+
+        <article>
+          <header>
+            <h3>Getting Started with ARIA</h3>
+            <p>
+              <time datetime="2026-04-15">April 15, 2026</time>
+              &middot; by <address style="display:inline; font-style:normal;">John Smith</address>
+            </p>
+          </header>
+          <p>
+            ARIA roles and attributes fill the gaps where native HTML semantics
+            fall short, especially in complex interactive components.
+          </p>
+          <footer>
+            <a href="#">Read more &rarr;</a>
+          </footer>
+        </article>
+      </section>
+
+      <!-- Aside / Sidebar -->
+      <aside aria-label="Did you know">
+        <section>
+          <h2>Did You Know?</h2>
+          <p>
+            Screen readers rely on semantic structure to navigate a page.
+            Headings, landmarks, and lists all contribute to a better
+            experience for users with disabilities.
+          </p>
+        </section>
+      </aside>
+
+      <!-- Contact Section -->
+      <section id="contact" aria-labelledby="contact-heading">
+        <h2 id="contact-heading">Contact Us</h2>
+        <form action="#" method="post" novalidate>
+          <fieldset style="border:none; padding:0;">
+            <legend style="font-weight:600; margin-bottom:12px;">Send a message</legend>
+
+            <label for="name" style="display:block; margin-bottom:4px;">Name</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              autocomplete="name"
+              required
+              placeholder="Your full name"
+              style="width:100%; padding:8px 12px; border:1px solid #d1d5db; border-radius:8px; margin-bottom:14px;"
+            />
+
+            <label for="email" style="display:block; margin-bottom:4px;">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              autocomplete="email"
+              required
+              placeholder="you@example.com"
+              style="width:100%; padding:8px 12px; border:1px solid #d1d5db; border-radius:8px; margin-bottom:14px;"
+            />
+
+            <label for="message" style="display:block; margin-bottom:4px;">Message</label>
+            <textarea
+              id="message"
+              name="message"
+              rows="4"
+              required
+              placeholder="How can we help?"
+              style="width:100%; padding:8px 12px; border:1px solid #d1d5db; border-radius:8px; margin-bottom:14px; resize:vertical;"
+            ></textarea>
+
+            <button
+              type="submit"
+              style="background:#4f46e5; color:#fff; border:none; padding:10px 24px; border-radius:8px; cursor:pointer; font-size:1rem;"
+            >Send Message</button>
+          </fieldset>
+        </form>
+      </section>
+
+    </main>
+
+    <!-- ===== Site Footer ===== -->
+    <footer>
+      <p>&copy; <time datetime="2026">2026</time> Semantic HTML5 Demo. All rights reserved.</p>
+    </footer>
+
+  </body>
+</html>
