@@ -1,12 +1,14 @@
-<!DOCTYPE html>
-<html>
-<body>
+let toy1 = {
+  name: "Blocks",
+  price: 19.99,
+  age_range: "6-12"
+};
 
-<h2>What Can JavaScript Do?</h2>
+let toy2 = {
+  name: "Stuffed Bear",
+  price: 29.99,
+  age_range: "0-3"
+};
 
-<p id="demo">JavaScript can change HTML content.</p>
-
-<button type="button" onclick='document.getElementById("demo").innerHTML = "Hello JavaScript!"'>Click Me!</button>
-
-</body>
-</html>
+let toys = [toy1, toy2];
+console.log(JSON.stringify(toys));
