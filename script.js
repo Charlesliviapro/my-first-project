@@ -10,5 +10,5 @@ let toy2 = {
   age_range: "0-3"
 };
 
-let toys = [toy1, toy2];
-console.log(JSON.stringify(toys));
+let stringToy1 = JSON.stringify(toy1);
+let stringToy2 = JSON.stringify(toy2);
